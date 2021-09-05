@@ -1,0 +1,298 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="app-content  my-3 my-md-5"  dir="rtl" >
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard 02</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard 02</li>
+            </ol>
+        </div>
+
+        <div class="row row-cards">
+            <div class="col-sm-12 col-lg-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body iconfont text-center">
+                        <h5 class="text-muted">Total Teacher</h5>
+                        <h1 class="mb-2 text-primary">459</h1>
+                        @*<p><span class="text-green"><i class="fa fa-arrow-up text-green"> </i>23% increase</span> in Last week</p>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body iconfont text-center">
+                        <h5 class="text-muted">Total Parents</h5>
+                        <h1 class="mb-2 text-warning">450</h1>
+                        @*<p><span class="text-green"><i class="fa fa-arrow-up text-green"></i> 3.25% less</span> than 1 yrs ago</p>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-6 col-xl-3">
+
+                <div class="card">
+                    <div class="card-body iconfont text-center">
+                        <h5 class="text-muted">Total Student</h5>
+                        <h1 class="mb-2 text-secondary ">525</h1>
+                        @*<p><span class="text-red"><i class="fa fa-arrow-down text-red"></i> 4 lead less</span> than last week</p>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-6 col-xl-3">
+                <div class="card">
+                    <div class="card-body iconfont text-center">
+                        <h5 class="text-muted">Activities</h5>
+                        <h1 class="mb-2 text-success">42%</h1>
+                        @*<p><span class="text-green"><i class="fa fa-arrow-up text-green"></i> 5.25% increase</span> last month</p>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h3 class="card-title">Installers and Retained Installers</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <canvas id="survey" class="dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Avg Downloads Per Month</div>
+                    </div>
+                    <div class="card-body overflow-hidden">
+                        <div class="chart-wrapper">
+                            <canvas id="lineChart1" class="dropshadow"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-md-12 col-xl-6 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Sales Status</div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div id="morrisBar8" class="chartmorris  dropshadow overflow-hidden"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xl-6">
+                <div class="card ">
+                    <div class="card-header bg-transparent">
+                        <div class="card-title">Social Followers</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 col-lg-6 col-xl-6">
+                                <div class="card p-5 socailicons bg-info">
+                                    <div class="card-body">
+                                        <small class="social-title mb-1">Twitter</small>
+                                        <h3 class="text-xxl mb-0 social-content">21,754</h3>
+                                        <i class="fa fa-twitter"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-6 col-xl-6">
+                                <div class="card p-5 socailicons google-plus1">
+                                    <div class="card-body  mb-0">
+                                        <small class="social-title mb-1 ">Google</small>
+                                        <h2 class="text-xxl mb-0 social-content">3,256</h2>
+                                        <i class="fa fa-google"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-6 col-xl-6">
+                                <div class="card p-5 socailicons mb-sm-0 facebook-like1 ">
+                                    <div class="card-body mb-0">
+                                        <small class="social-title mb-1 ">Facebook</small>
+                                        <h3 class="text-xxl mb-0 social-content">86,258</h3>
+                                        <i class="fa fa-facebook-f"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-6 col-xl-6">
+                                <div class="card p-5 socailicons mb-0 pinterest1 ">
+                                    <div class="card-body  mb-0">
+                                        <small class="social-title mb-1 ">Pinterest</small>
+                                        <h3 class="text-xxl mb-0 social-content">2,175</h3>
+                                        <i class="fa fa-pinterest-p"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-sm-12 col-lg12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Categories</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-6">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <div class="cat-item text-center">
+                                            <a href="classifieds-list.html"></a>
+                                            <div class="cat-img ">
+                                                <img src="~/assets/images/svg/android.svg" alt="Dash" class="p-0 mb-1">
+                                            </div>
+                                            <div class="cat-desc">
+                                                <h5 class="mb-1">Android</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-6">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <div class="cat-item text-center">
+                                            <a href="classifieds-list.html"></a>
+                                            <div class="cat-img ">
+                                                <img src="~/assets/images/svg/windows.svg" alt="Dash" class="p-0 mb-1">
+                                            </div>
+                                            <div class="cat-desc">
+                                                <h5 class="mb-1">Windows</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-6">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <div class="cat-item text-center">
+                                            <a href="classifieds-list.html"></a>
+                                            <div class="cat-img ">
+                                                <img src="~/assets/images/svg/apple.svg" alt="Dash" class="p-0 mb-1">
+                                            </div>
+                                            <div class="cat-desc">
+                                                <h5 class="mb-1">Mac</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-2 col-md-4 col-sm-6">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <div class="cat-item text-center">
+                                            <a href="classifieds-list.html"></a>
+                                            <div class="cat-img ">
+                                                <img src="~/assets/images/svg/businessapps.svg" alt="Dash" class="p-0 mb-1">
+                                            </div>
+                                            <div class="cat-desc">
+                                                <h5 class="mb-1">Business Apps</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="team-section text-center">
+                            <div class="team-img">
+                                <img src="~/assets/images/faces/female/1.jpg" class="img-thumbnail rounded-circle alt=" alt="">
+                            </div>
+                            <h4 class="font-weight-bold dark-grey-text mt-4">Harry	Walker</h4>
+                            <h6 class="font-weight-bold blue-text ">Web Developer</h6>
+                            <p class="font-weight-normal dark-grey-text">
+                                <i class="fa fa-quote-left pr-2"></i>Ut enim ad minima veniam, quis nostrum exercitationem ullam quis nostrum  corporis suscipit laboriosam, nisi ut aliquid commodi.
+                            </p>
+                            <div class="text-warning">
+                                <i class="fa fa-star"> </i>
+                                <i class="fa fa-star"> </i>
+                                <i class="fa fa-star"> </i>
+                                <i class="fa fa-star"> </i>
+                                <i class="fa fa-star"> </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Send Messages</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name1" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" placeholder="Email Address">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="example-textarea-input" rows="3" placeholder="Message"></textarea>
+                        </div>
+                        <a href="#" class="btn btn-primary">Submit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-12">
+                <div class=" card">
+                    <div class="card-header">
+                        <h3 class="card-title">Premium Apps</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <ul class="list-unstyled widget-spec  mb-0">
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i> Multi-Language Support
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i> Unlimited Push Notifications
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>Advanced Analytics
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>24/7 Technical Support
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>Tablet, mobile and desktop access
+                            </li>
+                            <li class="mb-0">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>30 Day FREE Trial for all new subscribers
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>12 Month Pre-paid subscription options
+                            </li>
+                            <li class="">
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>Licence and discounts into all 12 Month Pre-paid plans
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

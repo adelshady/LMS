@@ -1,0 +1,100 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Dashboard\Views\Admin\AR\" />
+    <Folder Include="wwwroot\assets\plugins\calendar2\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Dashboard\Views\Admin\Profile.cshtml" />
+    <None Include="wwwroot\Calendar\assets\css\style.scss" />
+    <None Include="wwwroot\Calendar\assets\js\main.js" />
+    <None Include="wwwroot\Calendar\assets\js\util.js" />
+    <None Include="wwwroot\Profile\assets\css\style.min.css.map" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-de-merc-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-es-merc-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-fr-merc-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-us-aea-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-us-lcc-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-world-mill-en.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\custom\mall-map.js" />
+    <None Include="wwwroot\Profile\assets\data\vector-maps\data\gdp-data.js" />
+    <None Include="wwwroot\Profile\assets\images\markers\marker.psd" />
+    <None Include="wwwroot\Profile\assets\js\colors.js" />
+    <None Include="wwwroot\Profile\assets\js\colors.min.js" />
+    <None Include="wwwroot\Profile\assets\js\colors.min.js.map" />
+    <None Include="wwwroot\Profile\assets\js\main.js" />
+    <None Include="wwwroot\Profile\assets\js\main.min.js" />
+    <None Include="wwwroot\Profile\assets\js\main.min.js.map" />
+    <None Include="wwwroot\Profile\assets\vendor\adminplus.js" />
+    <None Include="wwwroot\Profile\assets\vendor\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\bootstrap-timepicker.js" />
+    <None Include="wwwroot\Profile\assets\vendor\bootstrap.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\datatables-bootstrap3.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\dropzone.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\fullcalendar.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.bootstrap-touchspin.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.countdown.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.dataTables.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.fancytree-all.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.jvectormap.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\jquery.nestable.js" />
+    <None Include="wwwroot\Profile\assets\vendor\moment.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\morris.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\nouislider.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\raphael-min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\summernote.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\sweetalert.min.js" />
+    <None Include="wwwroot\Profile\assets\vendor\tether.min.js" />
+    <None Include="wwwroot\Register\.sass-cache\21880c0ffe15753a53f8402e9f64e1077e071510\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\2af427b2894d1e78c5806e231aa35d00838a84e0\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\5b5e4638a1b65395d974dddfa3d03b7a86b84808\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\5b5e4638a1b65395d974dddfa3d03b7a86b84808\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\5b5e4638a1b65395d974dddfa3d03b7a86b84808\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\5b5e4638a1b65395d974dddfa3d03b7a86b84808\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\5b5e4638a1b65395d974dddfa3d03b7a86b84808\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\632f5d1dd893d2e8764de51b8ca4120e25043113\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\632f5d1dd893d2e8764de51b8ca4120e25043113\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\632f5d1dd893d2e8764de51b8ca4120e25043113\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\632f5d1dd893d2e8764de51b8ca4120e25043113\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\632f5d1dd893d2e8764de51b8ca4120e25043113\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\extend.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\fonts.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\global.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\minxi.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\variables.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\8d060da290f1e90ae74e56e843d8749396294ac1\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\8d060da290f1e90ae74e56e843d8749396294ac1\responsive.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\e17f2ac53a8b63135158793a481cf8f239449aec\style.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f49285f1317a1cafa93ab4f5de346f92bbc40d58\main.scssc" />
+    <None Include="wwwroot\Register\.sass-cache\f49285f1317a1cafa93ab4f5de346f92bbc40d58\responsive.scssc" />
+  </ItemGroup>
+
+</Project>

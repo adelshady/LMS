@@ -1,0 +1,514 @@
+
+<html>
+<head>
+    <title>Student MarkSheet Percentage Counter Using JavaScript With Bootstrap 4</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+<p class="text-center"><span class="w" style="color:#EA2027;">W</span><span style="color:#009432;">3</span><span style="color:#1289A7;">H</span><span style="color:#12CBC4;">U</span><span style="color:#FFC312;">B</span><span style="color:#C4E538">S</span></p>
+<div class="row">
+         <div class="col-sm-1"><h4>Result :</h4></div>
+        <div class="col-sm-6">
+            <div class="form-group"><input type="text" id="bill" class="form-control" readonly></div>
+        </div>
+
+
+        <div class="col-sm-3">
+            <button class="btn btn-info btn-md btn-block" id="btn-add" data-toggle="modal" data-target="#addfiled">Add</button>
+
+        </div>
+	
+</div>
+   <div class="table-responsive">          
+  <table class="table" id="table">
+    <thead>
+      <tr>
+        <th class="text-dark">Sr No</th>
+        <th class="text-dark">Name</th>
+        <th class="text-dark">Age</th>
+        <th class="text-dark">Maths</th>
+        <th class="text-dark">Science</th>
+		<th class="text-dark">History</th>
+        <th class="text-dark">English</th>
+        <th class="text-dark">Total</th>
+        <th class="text-dark">Percentage</th>
+		<th class="text-dark">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="addfiled" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-left"><span class="mdlabel">Result</span></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3"><span class="mdlabel">Sr. No.</span></div>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <input type="number" data-role='number' id="sr" data-name='sr' class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Name</span></div>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <input type="text"  id="name" data-name='name'   class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Age</span></div>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <input type="number"  id="age" data-name='age'  class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Maths</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="text"  id="math" value="100 Out Of" data-name='math' class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Marks</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="number"  id="mark" data-name='mark' onkeyup="rate()" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3"><span class="mdlabel">Science</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="text"  id="science" data-name='science'  value="100 Out Of" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Marks</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="number" data-role='text' id="mark1" data-name='mark1' onkeyup="rate()" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3"><span class="mdlabel">History</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="text"  id="history" data-name='history' value="100 Out Of" class="form-control"  readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Marks</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="number" data-role='text' id="mark2" data-name='mark2' onkeyup="rate()" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3"><span class="mdlabel">English</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="text"  id="english" data-name='english' value="100 Out Of" class="form-control"  readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"><span class="mdlabel">Marks</span></div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <input type="number" data-role='text' id="mark3" data-name='mark3' onkeyup="rate()" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3"><span class="mdlabel">Total</span></div>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <input type="number" data-role='number' id="total" data-name='total' class="form-control" readonly>
+                        </div>
+                    </div>
+					<div class="col-sm-3"><span class="mdlabel">Percentage</span></div>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <input type="number" data-role='number' id="perc" data-name='perc' class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-info btn-block btn-lg" id="btn-new" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<script>
+
+    jQuery.fn.extend({
+    	sval: function () {
+    		var $target = this;
+    		var val = $target.val();
+    		val = val.replace(/\t/g, " ");
+    		val = val.replace(/"/g, '\"');
+    		val = val.replace(/\n/g, ' ');
+    		val = val.replace(/\\/g, '\\\\');
+    		return val;
+    	},
+    	stext: function () {
+    		var $target = this;
+    		var val = $target.text();
+    		val = val.replace(/\t/g, " ");
+    		val = val.replace(/"/g, '\"');
+    		val = val.replace(/\n/g, ' ');
+    		val = val.replace(/\\/g, '\\\\');
+    		return val;
+    	}
+    });
+	
+    var modals = {
+    	validation: function (modal) {
+    		var valid = true,
+    			validarr = [],
+				numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/,
+				regphone=/^[789]\d{9}$/,
+				regpassword=/^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,16}$/;
+
+    		$('#' + modal + ' input, #' + modal + ' select,#' + modal + ' textarea').each(
+    			function (index) {
+					var input = $(this);
+    				switch (input.attr('data-role')) {
+    					case 'text':
+    						if (input.sval() == "") {
+    							input.css('border-bottom', '2px solid red');
+    							valid =  valid * false;
+    						} else {
+    							input.css('border-bottom', '2px solid #2ecc71');
+    							valid =  valid * true;
+    						};
+							break;
+						case 'textarea':
+    						if (input.sval().length == 1) {
+								input.css('border-bottom', '2px solid red');
+								valid =  valid * false;
+    						} else {
+    							input.css('border-bottom', '2px solid #2ecc71');
+								valid =  valid * true;
+    						};
+							break;
+						case 'phone':
+						if (!regphone.test(input.sval())) {
+    							input.css('border-bottom', '2px solid red');
+    							valid =  valid * false;
+    						} else {
+    							input.css('border-bottom', '2px solid #2ecc71');
+    							valid =  valid * true;
+    						};
+							break;
+						case 'password':
+						if (!regpassword.test(input.sval())) {
+    							input.css('border-bottom', '2px solid red');
+    							valid =  valid * false;
+    						} else {
+    							input.css('border-bottom', '2px solid #2ecc71');
+    							valid =  valid * true;
+    						};
+    						break;
+    					case 'number':
+    						if (!numberRegex.test(input.sval())) {
+    							input.css('border-bottom', '2px solid red');
+    							valid = valid *  false;
+    						} else {
+    							input.css('border-bottom', '2px solid #2ecc71');
+    							valid =  valid *  true;
+    						};
+    						break;
+    					case 'select':
+    						if (input.sval() == "Select") {
+    							input.css('border-color', 'red');
+    							valid = valid *  false;
+    						} else {
+    							input.css('border-color', '#2ecc71');
+    							valid =  valid *  true;
+    						};
+    						break;
+    					case 'date':
+    						if (input.val() == "") {
+    							input.css('border-color', 'red');
+    							valid =  valid * false;
+    						} else {
+    							input.css('border-color', '#2ecc71');
+    							valid =  valid * true;
+    						};
+							break;
+							case 'radio':
+							if ($('input[name="'+input.attr('name')+'"]:checked').length == 0) {
+    							input.parent().parent().css('border', '1px solid red');
+    							valid = valid *  false;
+    						} else {
+    							input.parent().parent().css('border', '1px solid #2ecc71');
+    							valid =  valid *  true;
+    						};
+							break;
+					
+    				}
+
+    				validarr.push(valid);
+    			});
+    		var len = validarr.length;
+    		var count = 0;
+    		for (var i in validarr) {
+    			if (validarr[i] == true) {
+    				count++;
+    			}
+    		}
+    		if (len == count) {
+    			return true;
+    		} else {
+    			return false;
+    		}
+    	},
+    	getvalue: function (modal) {
+    		var getarr = [];
+			$('#' + modal + ' input, #' + modal + ' select,#' + modal + ' textarea').each(
+    			function (index) {
+    				var input = $(this);
+    				var key = input.attr('data-name');
+    				var value = input.sval();
+					if (typeof input.attr('data-name') !== 'undefined') {
+                        if(input.attr('data-role')=='radio'){
+                            if($(input).is(":checked")){
+                            getarr.push({
+    						"key": key,
+    						"value": value
+    					});
+                            }
+                        }else{
+                            getarr.push({
+    						"key": key,
+    						"value": value
+    					});
+                        }
+    					
+    				}
+    			});
+    		return getarr;
+    	},
+		putvalue: function (modal,json) {
+			
+			for(var i in json){
+					var last=json[i];
+					for(var keys in last){
+						$('#' + modal + ' input, #' + modal + ' select,#' + modal + ' textarea').each(
+    				function (index) {
+    				var input = $(this);
+					if (typeof input.attr('data-name') !== 'undefined') {
+						var key = input.attr('data-name');
+						
+						if(key==keys){
+							var radio=input.attr('data-role');
+							if(radio=='radio' && last[keys]==input.val()){
+								input.prop('checked',true);
+							}else{
+								var geter=$(input).val();
+								if(geter==''){
+									input.val(last[keys]);
+								}
+	
+								if(geter=='Select'){
+									input.val('Select');
+									input.val(last[keys]);
+								}
+							}
+						}
+						$(input).trigger('change');
+					}
+    			 });
+					}
+				}
+		},
+    	clear: function (modal) {
+    		$('#' + modal + ' input, #' + modal + ' select,#' + modal + ' textarea').each(
+    			function (index) {
+    				var input = $(this);
+    				switch (input.attr('data-role')) {
+    					case 'text':
+    						input.val("");
+							break;
+						case 'textarea':
+    						input.val("");
+    						break;
+    					case 'number':
+    						input.val("");
+    						break;
+    					case 'select':
+							input.val("Select");
+							$(input).trigger('change');
+    						break;
+    					case 'date':
+    						input.val("");
+							break;
+						case 'phone':
+							input.val("");
+						case 'password':
+    						input.val("");
+    						break;
+						default: input.val("");
+							break;
+    				}
+    			});
+    	},
+		gettable:function(table){
+			var arr1=[];
+			$('#'+table+' tbody tr').each(function(){	
+				var arr=[];
+				var len = $(this).find('td').length;
+					
+				for(var i=1;i<(len-1);i++){
+					var value=$(this).find('td:eq('+i+')').stext();
+					arr.push(value);
+				}
+				arr1.push({table:arr});
+		});
+			arr1.shift();
+			if(arr1!=''){
+				return arr1;
+			}else{
+				return false;
+			}
+		},
+		gettable1:function(table){
+		
+			var arr1=[];
+			$('#'+table+' tbody tr').each(function(){	
+				var arr=[];
+				var len = $(this).find('td').length;
+					
+				for(var i=1;i<(len-1);i++){
+					var value=$(this).find('td:eq('+i+')').stext();
+					arr.push(value);
+				}
+				arr1.push({table:arr});
+		});
+			
+			if(arr1!=''){
+				return arr1;
+			}else{
+				return false;
+			}
+		}
+    }
+    function checker(modal) {
+    	if (modals.validation(modal)) {
+            var data=modals.getvalue(modal);
+            var str='';
+                for(var i in data){
+                   str+=',"'+data[i].key+'":"'+data[i].value+'"'; 
+                }
+                str=str.substring(1);
+                str='{'+str+'}';
+                var obj=jQuery.parseJSON(str);
+    		return obj;
+    	}else{
+			return false;
+		}
+    }
+	
+function rate(e) {
+    var mark = parseFloat($('#mark').val());
+    var mark1 = parseFloat($('#mark1').val());
+	var mark2 = parseFloat($('#mark2').val());
+    var mark3 = parseFloat($('#mark3').val());
+    var amt = mark + mark1 + mark2 + mark3;
+    $('#total').val(amt);
+	
+	per();
+}
+function per(e){
+    var total= parseFloat($('#total').val());
+    var other= total/400*100;
+    $('#perc').val(other);
+}
+
+
+$('#btn-new').on('click', function () {
+    var valid = true;
+    if (checker('addfiled') != false) {
+        valid = valid * true;
+    } else {
+        valid = valid * false;
+    }
+    if (valid) {
+        tb = checker('addfiled');
+        table(tb.sr, tb.name, tb.age,tb.math, tb.mark,tb.science, tb.mark1, tb.history,tb.mark2,tb.english, tb.mark3, tb.total, tb.perc);
+        modals.clear('addfiled');
+    }
+
+})
+function table(sr, name, age,math,mark,science, mark1,history, mark2,english, mark3, total,perc) {
+    var str5 = '';
+    str5 += '<tr class="success">';
+    str5 += '<td class="sr">' + sr + '</td>';
+    str5 += '<td class="name">' + name + '</td>';
+    str5 += '<td class="age">' + age + '</td>';
+    str5 += '<td class="mark">' + mark + '</td>';
+    str5 += '<td class="mark1">' + mark1 + '</td>';
+    str5 += '<td class="mark2">' + mark2 + '</td>';
+    str5 += '<td class="mark3">' + mark3 + '</td>';
+    str5 += '<td class="total">' + total + '</td>';
+    str5 += '<td class="perc">' + perc + '</td>';
+	str5 +='<td><button class="btn btn-sm btn-danger" onclick="remover(this)">Remove</button></td>';
+    str5 += '</tr>';
+    $('#table').append(str5);
+pass();
+}
+function remover(e){
+$(e).parent().parent().remove();
+}
+function pass(){
+    var mark = parseFloat($('#mark').val());
+    var mark1 = parseFloat($('#mark1').val());
+	var mark2 = parseFloat($('#mark2').val());
+    var mark3 = parseFloat($('#mark3').val());
+if(mark  >= 35 && mark1 >= 35 && mark2 >= 35 && mark3 >= 35){
+      $("#bill").css({"background-color":"#009432","font-size": "200%","font-weight":"bold"});
+	 $("#bill").css("color","#fff");
+       $('#bill').val("PASS");
+}else{
+ $("#bill").css({"background-color":"#EA2027","font-size": "100%"});
+ $("#bill").css("color","#fff");
+$('#bill').val("Sorry Ur FAIL");
+}
+}
+
+
+
+
+</script>
+<body>
+</html>
+
+
