@@ -63,7 +63,7 @@ namespace LMS
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{area=Dashboard}/{controller=Admin}/{action=Index}/{id?}");
+                    pattern: "{area=Dashboard}/{controller=Admin}/{action=Login}/{id?}");
             });
         }
     }

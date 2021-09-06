@@ -26,6 +26,12 @@
                 @Html.DisplayNameFor(model => model.status)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Level.Stage.Section)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Level.Stage)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Level)
             </th>
             <th></th>
@@ -34,37 +40,43 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ParentName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Level.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary text-white">
-                        Edit
-                        <i class="fas fa-edit"></i>
-                    </a> |
-                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-success text-white">
-                        Details
-                        <i class="fas fa-list-alt"></i>
-                    </a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger text-white">
-                        Delete
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level.Stage.Section.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level.Stage.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary text-white">
+                    Edit
+                    <i class="fas fa-edit"></i>
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-success text-white">
+                    Details
+                    <i class="fas fa-list-alt"></i>
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger text-white">
+                    Delete
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

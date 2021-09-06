@@ -13,31 +13,45 @@ using System.Threading.Tasks;
 
 namespace LMS.Areas.Dashboard.Controllers
 {
-    public class StudentController : Controller
+    public class HoDsController : Controller
     {
         private readonly ApplicationDbContext db;
         public readonly IWebHostEnvironment webHostEnvironment;
-        public StudentController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment)
+        public HoDsController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment)
         {
             this.db = db;
             webHostEnvironment = _webHostEnvironment;
         }
-        public IActionResult Index()
+        // GET: HoDsController
+        public ActionResult Index()
         {
-            var user = db.users.Include(x => x.Level).Include(x=>x.Level.Stage).Include(x=>x.Level.Stage.Section).Where(x => x.JobType == "Student").ToList();
+            var HoDs = db.users.Include(x => x.Level).Include(x=>x.Level.Stage).Include(x=>x.Level.Stage.Section).Where(x => x.JobType == "HoDs").ToList();
+            return View(HoDs);
+        }
+
+        // GET: HoDsController/Details/5
+        public ActionResult Details(int ID)
+        {
+            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
             return View(user);
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        // GET: HoDsController/Create
+        public ActionResult Create()
         {
             ViewBag.level = new SelectList(db.levels, "ID", "Name");
             ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
             return View();
         }
+
+        // POST: HoDsController/Create
         [HttpPost]
-        public async Task<IActionResult> Create(User user, IFormCollection formValues)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(IFormCollection collection , User user)
         {
             user.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(user.LevelId);
@@ -49,7 +63,6 @@ namespace LMS.Areas.Dashboard.Controllers
             if (files.Count > 0)
             {
                 var uploads = Path.Combine(webrootpath, "images");
-
                 using (var filesStream = new FileStream(Path.Combine(uploads, files[0].FileName), FileMode.Create))
                 {
                     files[0].CopyTo(filesStream);
@@ -59,16 +72,16 @@ namespace LMS.Areas.Dashboard.Controllers
             else
             {
                 var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
-                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId+ ".jpg");
-                user.image = @"\images\" + user.NationalId + ".png";
+                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId + ".jpg");
+                user.image = @"\images\" + user.NationalId + ".jpg";
             }
             db.users.Add(user);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public IActionResult Edit(int ID)
+        // GET: HoDsController/Edit/5
+        public ActionResult Edit(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -76,14 +89,17 @@ namespace LMS.Areas.Dashboard.Controllers
             ViewBag.Level = new SelectList(db.levels, "ID", "Name");
             return View(user);
         }
+
+        // POST: HoDsController/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(int ID, IFormCollection formValuses, User users)
+        [ValidateAntiForgeryToken]
+        public  async Task<ActionResult> Edit(int ID, IFormCollection collection,User users)
         {
             var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
+
             users.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(users.LevelId);
             user.Level = Listlevel;
-
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -114,18 +130,17 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
-        public IActionResult Details(int ID)
+        // GET: HoDsController/Delete/5
+        public ActionResult Delete(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
-            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
-            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
             return View(user);
         }
 
-
-        public async Task<IActionResult> Delete(int ID)
+        // POST: HoDsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int ID, IFormCollection collection)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             string webRootPath = webHostEnvironment.WebRootPath;
@@ -140,23 +155,5 @@ namespace LMS.Areas.Dashboard.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> GetStage(int id)
-        {
-            List<Stage> subCategories = new List<Stage>();
-            subCategories = await (from stage in db.stages
-                                   where stage.SectionId == id
-                                   select stage).ToListAsync();
-            return Json(new SelectList(subCategories, "ID", "Name"));
-        }
-
-        public async Task<IActionResult> GetLevel(int id)
-        {
-            List<Level> Level = new List<Level>();
-            Level = await (from section in db.levels
-                           where section.StageId == id
-                           select section).ToListAsync();
-            return Json(new SelectList(Level, "ID", "Name"));
-        }
-
     }
 }

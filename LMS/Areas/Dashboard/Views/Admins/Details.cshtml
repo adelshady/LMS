@@ -1,9 +1,11 @@
 ﻿@model LMS.Models.User
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Detalis";
     Layout = null;
 }
+
+<h2>Detalis</h2>
 
 <hr />
 
@@ -19,8 +21,8 @@
                 <img src="@Model.image" alt="">
             </div>
             <div class="signup-form">
-                <form method="post" asp-action="Delete" enctype="multipart/form-data" id="register-form">
-                    <h2>Parent Details</h2>
+                <form method="post" asp-action="Details" enctype="multipart/form-data" id="register-form">
+                    <h2>student registration form</h2>
 
                     <div class="form-group">
                         <label for="name">Name :</label>
@@ -35,7 +37,6 @@
                         <label for="email">Email</label>
                         <input asp-for="Email" disabled type="email" name="Email" id="email" />
                     </div>
-
                     <div class="form-group">
                         <label for="address">Address :</label>
                         <input asp-for="Address" disabled type="text" name="Address" id="address" required />
@@ -60,6 +61,9 @@
                         <label for="pincode">National Id :</label>
                         <input asp-for="NationalId" disabled type="text" name="NationalId" id="pincode">
                     </div>
+
+
+
                     <div class="form-group">
                         <label for="pincode">status :</label>
                         <input asp-for="status" disabled type="text" name="status" placeholder="Active Or DisActive" id="pincode">
@@ -84,7 +88,7 @@
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" value="Delete" class="submit" name="submit" id="submit" />
+                        <input type="submit" value="Edit" asp-action="Edit" asp-route-id="@Model.ID" class="submit" name="submit" id="submit" />
                         <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
                     </div>
                 </form>
@@ -95,18 +99,9 @@
 </div>
 
 
-@*<--!register>></--!register>*@
-@*<script src="~/Register/vendor/jquery/jquery.min.js"></script>
-    <script src="~/Register/js/main.js"></script>*@
+<--!register>></--!register>
+<script src="~/Register/vendor/jquery/jquery.min.js"></script>
+<script src="~/Register/js/main.js"></script>
 
 
 
-
-
-
-
-
-
-@*<div class="col-3 offset-1">
-        <img src="@Model.image" width="100" style="border-radius:5px;border:1px solid #bbb9b9;" />
-    </div>*@

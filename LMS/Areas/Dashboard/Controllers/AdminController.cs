@@ -66,7 +66,7 @@ namespace LMS.Areas.Dashboard.Controllers
         [HttpPost]
         public  IActionResult Login(User user)
         {
-            var users =  db.registers.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault(); 
+            var users =  db.users.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault(); 
             if(user == null)
             {
                 ViewBag.message = "UserName or Password incorrect";

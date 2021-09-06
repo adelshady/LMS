@@ -54,7 +54,7 @@
 
                     <div class="form-group">
                         <label for="birth_date">DOB :</label>
-                        <input type="date" name="BirthDay" id="birth_date">
+                        <input type="date" name="BirthDay" id="birth_date" required>
                     </div>
                     <div class="form-group row">
                         <div class="col-2">
@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group">
                         <label for="pincode">National Id :</label>
-                        <input type="text" name="NationalId" id="pincode">
+                        <input type="text" name="NationalId" id="pincode" required>
                     </div>
 
                     <div class="form-group" hidden>
@@ -83,25 +83,24 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Section</label>
-                        <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="ViewBag.Section" class="form-control">
+                        <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="ViewBag.Section" class="form-control" required>
                             <option value="">Select your level</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Stage</label>
-                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="ViewBag.Stage" class="form-control">
+                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="ViewBag.Stage" class="form-control" required>
                             <option value="">Select your level</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Level</label>
-                        <select asp-for="@Model.LevelId" name="Level" id="LevelId" asp-items="ViewBag.level" class="form-control">
+                        <select asp-for="@Model.LevelId" name="Level" id="LevelId" asp-items="ViewBag.level" class="form-control" required>
                             <option value="">Select your level</option>
                         </select>
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" value="Reset All" class="submit" name="reset" id="reset" />
                         <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
                         <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
                     </div>

@@ -25,7 +25,7 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: Parent
         public ActionResult Index()
         {
-            var Parents = db.users.Include(x=>x.Level).Where(x => x.JobType == "Parent").ToList();
+            var Parents = db.users.Include(x=>x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.JobType == "Parent").ToList();
             return View(Parents);
         }
 
@@ -73,8 +73,8 @@ namespace LMS.Areas.Dashboard.Controllers
             else
             {
                 var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
-                System.IO.File.Copy(uploads, webrootpath + @"\images\" + "Avatar.jpg");
-                user.image = @"\images\" + "Avatar.jpg";
+                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId+ ".jpg");
+                user.image = @"\images\" + user.NationalId + ".jpg";
             }
             db.users.Add(user);
             await db.SaveChangesAsync();
