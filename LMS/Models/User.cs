@@ -30,6 +30,7 @@ namespace LMS.Models
         [Required]
         [Display(Name ="Job Type")]
         public string JobType { get; set; }
+        [Required]
         public string status { get; set; }
         [Required]
         [Display(Name ="Level")]

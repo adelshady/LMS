@@ -80,6 +80,9 @@ namespace LMS.Areas.Dashboard.Controllers
         public async Task<IActionResult> Edit(int ID, IFormCollection formValuses, User users)
         {
             var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
+            users.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(users.LevelId);
+            user.Level = Listlevel;
 
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
@@ -149,9 +152,9 @@ namespace LMS.Areas.Dashboard.Controllers
         public async Task<IActionResult> GetLevel(int id)
         {
             List<Level> Level = new List<Level>();
-            Level = await (from level in db.levels
-                           where level.StageId == id
-                           select level).ToListAsync();
+            Level = await (from section in db.levels
+                           where section.StageId == id
+                           select section).ToListAsync();
             return Json(new SelectList(Level, "ID", "Name"));
         }
 

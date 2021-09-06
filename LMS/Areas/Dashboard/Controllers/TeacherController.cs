@@ -13,33 +13,33 @@ using System.Threading.Tasks;
 
 namespace LMS.Areas.Dashboard.Controllers
 {
-    public class ParentController : Controller
+    public class TeacherController : Controller
     {
         private readonly ApplicationDbContext db;
-        private readonly IWebHostEnvironment webHostEnvironment;
-        public ParentController(ApplicationDbContext db , IWebHostEnvironment webHostEnvironment)
+        public readonly IWebHostEnvironment webHostEnvironment;
+        public TeacherController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment)
         {
             this.db = db;
-            this.webHostEnvironment = webHostEnvironment;  
+            webHostEnvironment = _webHostEnvironment;
         }
-        // GET: Parent
+        // GET: TeacherController
         public ActionResult Index()
         {
-            var Parents = db.users.Include(x=>x.Level).Where(x => x.JobType == "Parent").ToList();
-            return View(Parents);
+            var teacher = db.users.Include(x => x.Level).Where(x => x.JobType == "Teacher").ToList();
+            return View();
         }
 
-        // GET: Parent/Details/5
+        // GET: TeacherController/Details/5
         public ActionResult Details(int ID)
         {
-            var Parent = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
             ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
             ViewBag.Level = new SelectList(db.levels, "ID", "Name");
-            return View(Parent);
+            return View(user);
         }
 
-        // GET: Parent/Create
+        // GET: TeacherController/Create
         public ActionResult Create()
         {
             ViewBag.level = new SelectList(db.levels, "ID", "Name");
@@ -48,10 +48,10 @@ namespace LMS.Areas.Dashboard.Controllers
             return View();
         }
 
-        // POST: Parent/Create
+        // POST: TeacherController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(User user,IFormCollection collection)
+        public async Task<ActionResult> Create(IFormCollection collection ,User user)
         {
             user.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(user.LevelId);
@@ -63,7 +63,6 @@ namespace LMS.Areas.Dashboard.Controllers
             if (files.Count > 0)
             {
                 var uploads = Path.Combine(webrootpath, "images");
-
                 using (var filesStream = new FileStream(Path.Combine(uploads, files[0].FileName), FileMode.Create))
                 {
                     files[0].CopyTo(filesStream);
@@ -81,7 +80,7 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Parent/Edit/5
+        // GET: TeacherController/Edit/5
         public ActionResult Edit(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
@@ -91,17 +90,16 @@ namespace LMS.Areas.Dashboard.Controllers
             return View(user);
         }
 
-        // POST: Parent/Edit/5
+        // POST: TeacherController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int ID, IFormCollection collection,User users)
+        public async Task<ActionResult> Edit(int ID, IFormCollection collection ,User users)
         {
             var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
 
             users.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(users.LevelId);
             user.Level = Listlevel;
-
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -132,14 +130,14 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Parent/Delete/5
+        // GET: TeacherController/Delete/5
         public ActionResult Delete(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             return View(user);
         }
 
-        // POST: Parent/Delete/5
+        // POST: TeacherController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int ID, IFormCollection collection)

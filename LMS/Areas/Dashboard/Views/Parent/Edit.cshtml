@@ -99,9 +99,9 @@
 
 
 
-    <script src="~/Register/vendor/jquery/jquery.min.js"></script>
-    <script src="~/Register/js/main.js"></script>
-    <script type="text/javascript">
+<script src="~/Register/vendor/jquery/jquery.min.js"></script>
+<script src="~/Register/js/main.js"></script>
+<script type="text/javascript">
 
     $(document).ready(function () {
 
@@ -139,7 +139,7 @@
         $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
 
             var items = '';
-            $("#LevelId").empty(); 
+            $("#LevelId").empty();
             $.each(data, function (id, section) {
 
                 items += "<option value='" + section.value + "'>" + section.text + "</option>"
@@ -147,7 +147,7 @@
             $("#LevelId").html(items);
         });
     }
-    </script>
+</script>
 
 
 
@@ -156,125 +156,3 @@
 
 
 
-<!--<form method="post" asp-action="Edit" enctype="multipart/form-data">
-    <div class=" border backgroundWhite row">
-        <input type="hidden" asp-for="@Model.ID" />
-        <input type="hidden" asp-for="@Model.LevelId" />
-        <input type="hidden" asp-for="@Model.Level.StageId" />
-        <input type="hidden" asp-for="@Model.Level.Stage.SectionId" />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-8">
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Name" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Name" class="form-control" />
-                </div>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="ParentName" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="ParentName" class="form-control" />
-                </div>
-                <span asp-validation-for="ParentName" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Email" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Email" class="form-control" />
-                </div>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Gender" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="Gender" class="form-control" />
-                </div>
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="NationalId" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="NationalId" class="form-control" />
-                </div>
-                <span asp-validation-for="NationalId" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="phone" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="phone" class="form-control" />
-                </div>
-                <span asp-validation-for="phone" class="text-danger"></span>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="status" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="status" class="form-control" />
-                </div>
-                <span asp-validation-for="status" class="text-danger"></span>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="image" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <input type="file" name="files" multiple class="form-control" />
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Level.Stage.SectionId" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="@ViewBag.Section" class="form-control"></select>
-                </div>
-
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Level.StageId" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <select asp-for="@Model.Level.StageId" id="StageId" asp-items="@ViewBag.Stage" class="form-control"></select>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="LevelId" class="col-form-label"></label>
-                </div>
-                <div class="col-8">
-                    <select asp-for="@Model.LevelId" id="LevelId" asp-items="@ViewBag.Level" class="form-control"></select>
-                </div>
-
-            </div>
-
-        </div>-->
-@*<div class="col-3 offset-1">
-        <img src="@Model.image" width="100%" style="border-radius:5px;border:1px solid #bbb9b9;" />
-    </div>*@
-
-<!--</div>
-<div class="form-submit">-->
-@*<input type="submit" value="Reset All" class="submit" name="reset" id="reset" />*@
-<!--<input type="submit" value="Update" name="submit" id="submit" class="btn btn-primary text-white" />
-        <input type="submit" asp-action="Index" value="Back To List" name="reset" id="reset" class="btn btn-primary text-white" />
-    </div>
-</form>-->
