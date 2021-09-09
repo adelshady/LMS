@@ -1,0 +1,52 @@
+﻿@model LMS.Models.Level
+
+@{
+    ViewData["Title"] = "LevelDetalis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">Delete Level</h2>
+<br />
+
+<br />
+<form method="post" asp-action="LevelDelete">
+    <div class=" border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group row">
+
+            <div class="col-3">
+                <label asp-for="StageId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="StageId" disabled asp-items="@ViewBag.Stage" class="form-control"></select>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label asp-for="Name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Name" disabled class="form-control" />
+            </div>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input class="btn btn-info form-control" asp-action="LevelDelete" type="submit" asp-route-id="@Model.ID" value="Edit" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="LevelIndex" class="btn btn-success form-control">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

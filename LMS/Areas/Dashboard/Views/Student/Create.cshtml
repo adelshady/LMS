@@ -61,7 +61,7 @@
                             <label asp-for="image" class="col-form-label"></label>
                         </div>
                         <div class="col-5">
-                            <input type="file" name="files" multiple class="form-control"  />
+                            <input type="file" name="files" multiple class="form-control" />
                         </div>
                         <span asp-validation-for="image" class="text-danger"></span>
                     </div>
@@ -117,7 +117,6 @@
 <script src="~/Register/js/main.js"></script>
 
 
-
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -128,11 +127,11 @@
 
             getStage();
         });
-       
+
         $('#StageId').change(function () {
             getSection();
         });
-        
+
     });
 
 
@@ -170,20 +169,4 @@
 </script>
 
 
-
-@*<div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </form>
-        </div>
-    </div>*@
-
-@*<div>
-        <a asp-action="Index">Back to List</a>
-    </div>*@
 

@@ -3,6 +3,8 @@ using LMS.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -75,6 +77,281 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region Section
+        
+        public IActionResult SectionIndex()
+        {
+            var section = db.sections.ToList();
+            return View(section);
+        }
+        [HttpGet]
+        [ActionName("Create")]
+        public IActionResult SectionCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("Create")]
+        public async Task<IActionResult> SectionCreate(Section section)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedSubSection = db.sections.Where(x => x.Name == section.Name);
+
+                if (ExitedSubSection.Count() > 0)
+                {
+                    ViewBag.message = "Section exited please use another name";
+                }
+                else
+                {
+                    db.sections.Add(section);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(SectionIndex));
+                }
+            }
+            return View(section);
+        }
+        [HttpGet]
+        [ActionName("Edit")]
+        public async Task<IActionResult> SectionEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var SectionId = await db.sections.FindAsync(id);
+            if (SectionId == null)
+            {
+                return NotFound();
+            }
+            return View(SectionId);
+        }
+        [HttpPost]
+        [ActionName("Edit")]
+        public async Task<IActionResult> SectionEdit(Section section)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Update(section);
+                await db.SaveChangesAsync();
+                return RedirectToAction(nameof(SectionIndex));
+            }
+            return View(section);
+        }
+
+        public async Task<IActionResult> Detalis(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var SectionId = await db.sections.FindAsync(id);
+            return View(SectionId);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var sectionId = await db.sections.FindAsync(id);
+
+            db.sections.Remove(sectionId);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(SectionIndex));
+        }
+
+        #endregion
+
+
+        #region Stage
+        public IActionResult StageIndex()
+        {
+            var section = db.stages.Include(x => x.Section).ToList();
+            return View(section);
+        }
+        [HttpGet]
+        public IActionResult StageCreate()
+        {
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StageCreate(Stage stage)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedSubSection = db.stages.Include(x => x.Section).Where(x => x.Name == stage.Name);
+                ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+                if (ExitedSubSection.Count() > 0)
+                {
+                    ViewBag.message = "Section exited please use another name";
+                }
+                else
+                {
+                    db.stages.Add(stage);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(StageIndex));
+                }
+            }
+            return View(stage);
+        }
+        [HttpGet]
+        public async Task<IActionResult> StageEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            if (StageId == null)
+            {
+                return NotFound();
+            }
+            return View(StageId);
+        }
+        [HttpPost]
+        public async Task<IActionResult> StageEdit(int id, Stage stage)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedSubSection = db.stages.Include(x => x.Section).Where(x => x.Name == stage.Name);
+                ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+                if (ExitedSubSection.Count() > 0)
+                {
+                    ViewBag.message = "Section exited please use another name";
+                }
+                else
+                {
+                    var StageId = await db.stages.FindAsync(id);
+                    StageId.Name = stage.Name;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(StageIndex));
+                }
+            }
+            return View(stage);
+        }
+        public async Task<IActionResult> StageDetalis(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            return View(StageId);
+        }
+        public async Task<IActionResult> StageDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var StageId = await db.stages.FindAsync(id);
+
+            db.stages.Remove(StageId);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(StageIndex));
+        }
+        #endregion
+
+
+        #region Level
+          public IActionResult LevelIndex()
+        {
+            var level = db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).ToList();
+            return View(level) ;
+        }
+        [HttpGet]
+        public IActionResult LevelCreate()
+        {
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LevelCreate(Level level)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
+                ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+                if (ExitedSubSection.Count() > 0)
+                {
+                    ViewBag.message = "Level Name exited please use another name";
+                }
+                else
+                {
+                    db.levels.Add(level);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(StageIndex));
+                }
+            }
+            return View(level);
+        }
+        public async Task<IActionResult> LevelEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            if (levelId == null)
+            {
+                return NotFound();
+            }
+            return View(levelId);
+        }
+        [HttpPost]
+        public async Task<IActionResult> LevelEdit(int id, Level level)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
+                ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+                if (ExitedSubSection.Count() > 0)
+                {
+                    ViewBag.message = "Level Name exited please use another name";
+                }
+                else
+                {
+                    var levelId = await db.levels.FindAsync(id);
+                    levelId.Name = level.Name;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(StageIndex));
+                }
+            }
+            return View(level);
+        }
+
+        public async Task<IActionResult> LevelDetalis(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            return View(levelId);
+        }
+        public async Task<IActionResult> LevelDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var LevelId = await db.levels.FindAsync(id);
+
+            db.levels.Remove(LevelId);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(StageIndex));
+        }
+
+        #endregion
 
         public IActionResult CalendarAR()
         {
@@ -88,7 +365,7 @@ namespace LMS.Areas.Dashboard.Controllers
         }
 
         // another Profile 
-        public IActionResult Detalis()
+        public IActionResult DetalisP()
         {
             return View();
         }

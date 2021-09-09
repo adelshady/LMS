@@ -21,8 +21,8 @@ namespace LMS.Data
         public DbSet<Section> sections { get; set; }
         public DbSet<Stage> stages { get; set; }
         public DbSet<Level> levels { get; set; }
-
         public DbSet<User> users{ get; set; }
+        public DbSet<Course> courses { get; set; }
 
 
     }

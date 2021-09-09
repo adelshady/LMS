@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LMS.Models.User>
+﻿@model IEnumerable<LMS.Models.Course>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,15 +13,12 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.CourseCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParentName)
+                @Html.DisplayNameFor(model => model.CourseName)
             </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Level.Stage.Section)
             </th>
@@ -32,23 +29,25 @@
                 @Html.DisplayNameFor(model => model.Level)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.status)
+                 Teacher
+            </th>
+            <th>
+                HoDs
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.CourseCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParentName)
+                @Html.DisplayFor(modelItem => item.CourseName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Level.Stage.Section.Name)
             </td>
@@ -59,7 +58,10 @@
                 @Html.DisplayFor(modelItem => item.Level.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.status)
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary text-white">
@@ -76,6 +78,6 @@
                 </a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

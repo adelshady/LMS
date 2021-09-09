@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" value="Edit" asp-action="Edit"  asp-route-id="@Model.ID" class="submit" name="submit" id="submit" />
+                        <a asp-action="Edit"  asp-route-id="@Model.ID" class="btn btn-primary text-white" >Edit</a>
                         <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
                     </div>
                 </form>

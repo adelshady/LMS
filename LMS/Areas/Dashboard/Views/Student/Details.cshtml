@@ -9,20 +9,24 @@
 
 <hr />
 
-<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+@*<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">*@
 
 <!-- Main css -->
 <link rel="stylesheet" href="~/Register/css/style.css">
+<form method="post" asp-action="Details" enctype="multipart/form-data" id="friendform">
+    <div class="main">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-img">
+                    <img src="@Model.image" alt="">
+                </div>
+                <div class="signup-form">
 
-<div class="main">
-    <div class="container">
-        <div class="signup-content">
-            <div class="signup-img">
-                <img src="@Model.image" alt="">
-            </div>
-            <div class="signup-form">
-                <form method="post" asp-action="Details" enctype="multipart/form-data" id="register-form">
                     <h2>student registration form</h2>
+                    <input type="hidden" name="ID" value="@Model.ID">
+                    <input type="hidden" name="LevelId" value="@Model.LevelId">
+                    <input type="hidden" name="StageId" value="@Model.Level.StageId">
+                    <input type="hidden" name="SectionId" value="@Model.Level.Stage.SectionId">
 
                     <div class="form-group">
                         <label for="name">Name :</label>
@@ -56,7 +60,7 @@
                         <label for="birth_date">DOB :</label>
                         <input asp-for="BirthDay" disabled type="date" name="BirthDay" id="birth_date">
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="pincode">National Id :</label>
                         <input asp-for="NationalId" disabled type="text" name="NationalId" id="pincode">
@@ -64,7 +68,7 @@
 
                     <div class="form-group">
                         <label for="pincode">status :</label>
-                        <input asp-for="status" disabled type="text" name="status" placeholder="Active Or DisActive" id="pincode">
+                        <input asp-for="status" disabled type="text" name="status" placeholder="Active Or DisActive" id="Status">
                     </div>
                     <div class="form-group">
                         <label class="control-label">Section</label>
@@ -74,7 +78,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Stage</label>
-                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="@ViewBag.Stage"  disabled class="form-control">
+                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="@ViewBag.Stage" disabled class="form-control">
                             <option value="">Select your level</option>
                         </select>
                     </div>
@@ -86,20 +90,64 @@
                     </div>
 
                     <div class="form-submit">
-                        <input type="submit" value="Edit" asp-action="Edit"  asp-route-ID="@Model.ID" class="submit"  id="submit" />
+                        <a asp-action="Edit" asp-route-Id="@Model.ID" class="btn btn-primary text-white">Edit</a>
                         <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
+</form>
 
 
 <--!register>></--!register>
 <script src="~/Register/vendor/jquery/jquery.min.js"></script>
 <script src="~/Register/js/main.js"></script>
 
+@*<script>
+        $(document).ready(function () {
+            $("button").click(function (e) {
+                //Serialize the form datas.
+                var valdata = $("form").serialize();
+                //to get alert popup
+               /* alert(valdata);*/
+                $.ajax({
+                    url: '/Dashboard/Student/Edit',
+                    type: "Post",
+                    dataType: 'html',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata
+                });
+            });
+        });
+    </script>*@
 
 
+@*<script type="text/javascript">
+        function AjaxFormSubmit() {
+            //Set the URL.
+            var url = $("#friendform").attr("action");
+
+            //Add the Field values to FormData object.
+            var formData = new FormData();
+            formData.append("firstName", $("#Status").val());
+            formData.append("lastName", $("#SectionId").val());
+
+
+            $.ajax({
+                type: 'POST',
+                url: "/Student/Edit",
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (response) {
+                if (response) {
+                    alert("Form submitted!");
+                }
+                else {
+                    alert("Invalid Form data!");
+                }
+            });
+        }
+    </script>*@

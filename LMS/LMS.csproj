@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Areas\Dashboard\Views\Admin\Profile.cshtml" />
+    <None Include="Areas\Dashboard\Views\Test\Profile.cshtml" />
     <None Include="wwwroot\Calendar\assets\css\style.scss" />
     <None Include="wwwroot\Calendar\assets\js\main.js" />
     <None Include="wwwroot\Calendar\assets\js\util.js" />

@@ -140,6 +140,15 @@ namespace LMS.Areas.Dashboard.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        //public JsonResult GetData(int  ID)
+        //{
+        //    var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+        //    ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+        //    ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+        //    ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+        //    return Json(user);
+        //}
         public async Task<IActionResult> GetStage(int id)
         {
             List<Stage> subCategories = new List<Stage>();

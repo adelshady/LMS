@@ -1,4 +1,4 @@
-﻿@model LMS.Models.User
+﻿@model LMS.Models.Course
 
 @{
     ViewData["Title"] = "Create";
@@ -19,68 +19,35 @@
             </div>
             <div class="signup-form">
                 <form method="post" asp-action="Create" enctype="multipart/form-data" id="register-form">
-                    <h2>Teacher registration form</h2>
+                    <h2>Course registration form</h2>
 
                     <div class="form-group">
-                        <label for="name">Name :</label>
-                        <input type="text" name="Name" id="name" required />
+                        <label for="name">CourseCode :</label>
+                        <input type="text" name="CourseCode" id="name" required />
                     </div>
                     <div class="form-group">
-                        <label for="name">Parent Name :</label>
-                        <input type="text" name="ParentName" id="name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="Email" id="email" />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Password :</label>
-                        <input type="password" name="Password" id="address" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address :</label>
-                        <input type="text" name="Address" id="address" required />
+                        <label for="name">CourseName :</label>
+                        <input type="text" name="CourseName" id="name" required />
                     </div>
 
-                    <div class="form-group">
-                        <label for="address">phone :</label>
-                        <input type="tel" name="phone" id="address" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Gender :</label>
-                        <input type="text" name="Gender" id="address" required />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="birth_date">DOB :</label>
-                        <input type="date" name="BirthDay" id="birth_date" required>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="image" class="col-form-label"></label>
+                    @if (Model.User.JobType == "Teacher")
+                    {
+                        <div class="form-group">
+                            <label for="pincode">Teacher:</label>
+                            <select asp-for="@Model.User.JobType"  asp-items="@ViewBag.User " class="form-control" required>
+                            </select>
+                            @*<input type="text" name="JobType" id="pincode">*@
                         </div>
-                        <div class="col-5">
-                            <input type="file" name="files" multiple class="form-control"  />
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label for="pincode">HoDs:</label>
+                            <select asp-for="@Model.User.JobType"  asp-items="@ViewBag.User " class="form-control" required>
+                            </select>
                         </div>
-                        <span asp-validation-for="image" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="pincode">National Id :</label>
-                        <input type="text" name="NationalId" id="pincode" required>
-                    </div>
+                    }
 
-                    <div class="form-group" hidden>
-                        <label for="pincode">Job Type:</label>
-                        <input type="radio" name="JobType" value="Teacher" checked /> Teacher
-                        @*<input type="text" name="JobType" id="pincode">*@
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="pincode">status :</label>
-                        <input type="text" name="status" placeholder="Active Or DisActive" id="pincode" required>
-                    </div>
                     <div class="form-group">
                         <label class="control-label">Section</label>
                         <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="ViewBag.Section" class="form-control" required>
@@ -89,7 +56,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Stage</label>
-                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="ViewBag.Stage" class="form-control"  required>
+                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="ViewBag.Stage" class="form-control" required>
                             <option value="">Select your level</option>
                         </select>
                     </div>
