@@ -1,0 +1,49 @@
+﻿@model LMS.Models.Lesson
+
+@{
+    ViewData["Title"] = "Detalis";
+    Layout = null;
+}
+<head>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+</head>
+<br />
+<h2 class="text-info">Detalis Lesson</h2>
+<br />
+
+<br />
+<div class="border backgroundWhite">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+
+        <div class="col-2">
+            <label asp-for="Name" class="col-form-label"></label>
+        </div>
+        <div class="col-5">
+            <input asp-for="Name" class="form-control" disabled />
+        </div>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group row">
+        <div class="col-5 offset-2">
+            <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-info form-control" asp-action="LessonEdit" asp-route-Id="@Model.ID">Edit</a>
+                </div>
+                <div class="col-6">
+                    <a asp-action="LessonIndex" class="btn btn-success form-control">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/jquery-ui.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/site.js"></script>
+
+
+

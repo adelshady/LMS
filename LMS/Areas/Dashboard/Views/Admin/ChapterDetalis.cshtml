@@ -1,0 +1,52 @@
+﻿@model LMS.Models.Chapter
+
+@{
+    ViewData["Title"] = "ChapterDetalis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<h2 class="text-info">Detalis Chapter</h2>
+<br />
+
+<br />
+<form method="post" asp-action="ChapterDetalis">
+    <div class=" border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group row">
+
+            <div class="col-3">
+                <label asp-for="Lesson" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="LessonId" disabled asp-items="@ViewBag.Lesson" class="form-control"></select>
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label class="col-form-label">Chapter</label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Name" disabled class="form-control" />
+            </div>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-info form-control" asp-action="ChapterEdit" asp-route-id="@Model.ID">Edit</a>
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="ChapterIndex" class="btn btn-success form-control">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

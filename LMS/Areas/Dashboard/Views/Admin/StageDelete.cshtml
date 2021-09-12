@@ -1,7 +1,7 @@
 ﻿@model LMS.Models.Stage
 
 @{
-    ViewData["Title"] = "StageDetalis";
+    ViewData["Title"] = "StageDelete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -39,7 +39,7 @@
             <div class="col-5 offset-2">
                 <div class="row">
                     <div class="col-6">
-                        <input class="btn btn-info form-control" asp-action="StageDelete" type="submit" asp-route-id="@Model.ID" value="Edit" />
+                        <input class="btn btn-info form-control" asp-action="StageDelete" type="submit" asp-route-id="@Model.ID" value="Delete" />
                     </div>
                     <div class="col-6">
                         <a asp-action="StageIndex" class="btn btn-success form-control">Back To List</a>

@@ -1,0 +1,122 @@
+﻿@model LMS.Models.QuizDetails
+
+@{
+    ViewData["Title"] = "QuizDetailsCreate";
+}
+
+<hr />
+
+<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+<!-- Main css -->
+<link rel="stylesheet" href="~/Register/css/style.css">
+
+<div class="main">
+    <div class="container">
+        <div class="signup-content">
+            <div class="signup-img">
+                <img src="~/Register/images/signup-img.jpg" alt="">
+            </div>
+            <div class="signup-form">
+                <form method="post" asp-action="QuizDetailsCreate" enctype="multipart/form-data" id="register-form">
+                    <h2>QuizDetailsCreate </h2>
+
+                    <div class="form-group">
+                        <label for="name">Name :</label>
+                        <input type="text" name="Name" id="name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Start Time :</label>
+                        <input type="datetime" name="StartTime" id="name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">received Time</label>
+                        <input type="datetime" name="receivedTime" id="email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Attempts :</label>
+                        <input type="number" name="Attempts" placeholder="6 Attempts only" id="address" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Chapter</label>
+                        <select asp-for="@Model.ChapterId" id="ChapterId" asp-items="@ViewBag.Chapter" class="form-control" required>
+                            <option value="">Select your level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Lesson</label>
+                        <select asp-for="@Model.Chapter.LessonId" id="LessonId" asp-items="@ViewBag.Lesson" class="form-control" required>
+                            <option value="">Select your level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Question Type </label>
+                        <select asp-for="@Model.QuestionId"  id="QuestionId" asp-items="@ViewBag.QuestionType" class="form-control" required>
+                            <option value="">Select your level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Question Name</label>
+                        <input type="text" asp-for="Question.Name" required />
+                    </div>
+                    @*<div class="form-group">
+                        <label for="address">Answer Name</label>
+                        <input type="text" asp-for="Question.Answer.Name" required />
+                    </div>*@
+                    <div class="form-group">
+                        <label for="address">Image for Answer :</label>
+                        <input type="file" asp-for="Question.Image" />
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Degree:</label>
+                        <input type="text" asp-for="Question.Degree" />
+                    </div>
+
+                    <div class="form-submit">
+                        <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
+                        <input type="submit" asp-action="QuizDetailsIndex" value="Back To List" class="submit" name="reset" id="reset" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<--!register>></--!register>
+<script src="~/Register/vendor/jquery/jquery.min.js"></script>
+<script src="~/Register/js/main.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#ChapterId').change(function () {
+            getLesson();
+        });
+    });
+
+    function getLesson() {
+
+        var url = '@Url.Content("~/")' + "Dashboard/Quiz/getLesson";
+        var ddlsource = '#ChapterId';
+        $("#LessonId").empty();
+        $("#LessonId").val('');
+        var items = "<option value=''> -- Select -- </option>";
+        $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+            $.each(data, function (id, chapter) {
+
+                items += "<option value='" + chapter.value + "'>" + chapter.text + "</option>"
+            });
+            $("#LessonId").html(items);
+        });
+    }
+
+</script>
+
+
+
+

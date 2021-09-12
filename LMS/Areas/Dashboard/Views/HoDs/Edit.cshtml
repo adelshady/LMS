@@ -21,9 +21,9 @@
             </div>
             <div class="signup-form">
                 <input type="hidden" asp-for="@Model.ID" />
-                <input type="hidden" asp-for="@Model.LevelId" />
-                <input type="hidden" asp-for="@Model.Level.StageId" />
-                <input type="hidden" asp-for="@Model.Level.Stage.SectionId" />
+                @*<input type="hidden" asp-for="@Model.LevelId" />
+                    <input type="hidden" asp-for="@Model.Level.StageId" />
+                    <input type="hidden" asp-for="@Model.Level.Stage.SectionId" />*@
                 <form method="post" asp-action="Edit" enctype="multipart/form-data" id="register-form">
                     <h2>Parent Details</h2>
                     <div class="form-group">
@@ -101,14 +101,19 @@
 
 <script src="~/Register/vendor/jquery/jquery.min.js"></script>
 <script src="~/Register/js/main.js"></script>
+
+
 <script type="text/javascript">
 
     $(document).ready(function () {
 
-        getStage();
-        getSection();
+        //getStage();
+        //getSection();
         $('#SectionId').change(function () {
             getStage();
+            $("#LevelId").empty();
+            var items = "<option value=''> -- Select -- </option>";
+            $("#LevelId").append(items);
         });
         $('#StageId').change(function () {
             getSection();
@@ -120,10 +125,10 @@
 
         var url = '@Url.Content("~/")' + "Dashboard/Student/GetStage";
         var ddlsource = '#SectionId';
+        $("#StageId").empty();
+        $("#StageId").val('');
+        var items = "<option value=''> -- Select -- </option>";
         $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
-
-            var items = '';
-            $("#StageId").empty();
             $.each(data, function (id, Stage) {
 
                 items += "<option value='" + Stage.value + "'>" + Stage.text + "</option>"
@@ -136,10 +141,13 @@
 
           var url = '@Url.Content("~/")' + "Dashboard/Student/GetLevel";
           var ddlsource = '#StageId';
+          $("#LevelId").empty();
+          $("#LevelId").val('');
+          var items = "<option value=''> -- Select -- </option>";
         $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
 
-            var items = '';
-            $("#LevelId").empty();
+            //var items = '';
+
             $.each(data, function (id, section) {
 
                 items += "<option value='" + section.value + "'>" + section.text + "</option>"

@@ -24,6 +24,7 @@ namespace LMS.Areas.Dashboard.Controllers
             this.db = db;
             webHostEnvironment = _webHostEnvironment;
         }
+        #region Register
 
         [HttpGet]
         public IActionResult Register()
@@ -56,10 +57,12 @@ namespace LMS.Areas.Dashboard.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
         public IActionResult Index()
         {
             return View();
         }
+        #region Login
         [HttpGet]
         public IActionResult Login()
         {
@@ -76,9 +79,11 @@ namespace LMS.Areas.Dashboard.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        #endregion
+
 
         #region Section
-        
+
         public IActionResult SectionIndex()
         {
             var section = db.sections.ToList();
@@ -185,7 +190,7 @@ namespace LMS.Areas.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var ExitedSubSection = db.stages.Include(x => x.Section).Where(x => x.Name == stage.Name);
-                ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+                ViewBag.Section = new SelectList(db.stages.Where(X=>X.SectionId==stage.SectionId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Section exited please use another name";
@@ -207,7 +212,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 return NotFound();
             }
             var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
-            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            ViewBag.Section = new SelectList(db.stages.Where(x=>x.SectionId==StageId.SectionId), "ID", "Name");
             if (StageId == null)
             {
                 return NotFound();
@@ -220,7 +225,8 @@ namespace LMS.Areas.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var ExitedSubSection = db.stages.Include(x => x.Section).Where(x => x.Name == stage.Name);
-                ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+                var StageID = await db.stages.Include(x => x.Section).SingleOrDefaultAsync(x => x.ID == id);
+                ViewBag.Section = new SelectList(db.stages.Where(x => x.SectionId == StageID.SectionId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Section exited please use another name";
@@ -242,7 +248,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 return NotFound();
             }
             var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
-            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            ViewBag.Section = new SelectList(db.stages.Where(x=>x.SectionId== StageId.SectionId), "ID", "Name");
             return View(StageId);
         }
         public async Task<IActionResult> StageDelete(int? id)
@@ -278,7 +284,7 @@ namespace LMS.Areas.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
-                ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+                ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==level.StageId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Level Name exited please use another name";
@@ -299,7 +305,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 return NotFound();
             }
             var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==levelId.StageId), "ID", "Name");
             if (levelId == null)
             {
                 return NotFound();
@@ -312,7 +318,8 @@ namespace LMS.Areas.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
-                ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+                var levelID = await db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
+                ViewBag.Stage = new SelectList(db.levels.Where(x => x.StageId == levelID.StageId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Level Name exited please use another name";
@@ -335,7 +342,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 return NotFound();
             }
             var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==levelId.StageId), "ID", "Name");
             return View(levelId);
         }
         public async Task<IActionResult> LevelDelete(int? id)
@@ -352,6 +359,173 @@ namespace LMS.Areas.Dashboard.Controllers
         }
 
         #endregion
+
+
+        #region Lesson
+        public IActionResult LessonIndex()
+        {
+            var lesson = db.lessons.ToList();
+            return View(lesson);
+        }
+        [HttpGet]
+        public IActionResult LessonCreate()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LessonCreate(Lesson lesson)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedLesson = db.lessons.Where(x => x.Name == lesson.Name);
+                if (ExitedLesson.Count() > 0)
+                {
+                    ViewBag.message = "Lesson Name exited please use another name";
+                }
+                else
+                {
+                    db.lessons.Add(lesson);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(LessonIndex));
+                }
+            }
+            return View(lesson);
+        }
+        [HttpGet]
+        public IActionResult LessonEdit(int id)
+        {
+            var lesson = db.lessons.Find(id);
+            if (lesson == null)
+            {
+                return NotFound();
+            }
+            return View(lesson);
+        }
+        [HttpPost]
+        public async Task<IActionResult> LessonEdit(int id,Lesson lesson)
+        {
+            db.Update(lesson);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(LessonIndex));
+        }
+
+        public IActionResult LessonDetails(int id)
+        {
+            var LessonId = db.lessons.Find(id);
+            return View(LessonId);
+        }
+        
+        public async Task<IActionResult> LessonDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var LessonId = await db.lessons.FindAsync(id);
+            db.lessons.Remove(LessonId);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(LessonIndex));
+        }
+        #endregion
+
+
+        #region Chapter
+
+        public IActionResult ChapterIndex()
+        {
+            var Chapters = db.chapters.Include(x => x.Lesson).ToList();
+            return View(Chapters);
+        }
+        [HttpGet]
+        public IActionResult ChapterCreate()
+        {
+            ViewBag.Lesson = new SelectList(db.lessons, "ID", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChapterCreate(Chapter chapter)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedChapter = db.chapters.Include(x => x.Lesson).Where(x => x.Name == chapter.Name);
+                ViewBag.Lesson = new SelectList(db.lessons, "ID", "Name");
+                if (ExitedChapter.Count() > 0)
+                {
+                    ViewBag.message = "Chapter Name exited please use another name";
+                }
+                else
+                {
+                    db.chapters.Add(chapter);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(ChapterIndex));
+                }
+            }
+            return View(chapter);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ChapterEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var ChapterId = await db.chapters.Include(x => x.Lesson).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId== ChapterId.LessonId), "ID", "Name");
+            if (ChapterId == null)
+            {
+                return NotFound();
+            }
+            return View(ChapterId);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChapterEdit(int id, Chapter chapter)
+        {
+            if (ModelState.IsValid)
+            {
+                var ExitedChapterId = db.chapters.Include(x => x.Lesson).Where(x => x.Name == chapter.Name);
+                var ChapterId = await db.chapters.Include(x => x.Lesson).SingleOrDefaultAsync(x => x.ID == id);
+                ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId== ChapterId.LessonId), "ID", "Name");
+                if (ExitedChapterId.Count() > 0)
+                {
+                    ViewBag.message = "Chapter Name exited please use another name";
+                }
+                else
+                {
+                    var ChapterID = await db.chapters.FindAsync(id);
+                    ChapterID.Name = chapter.Name;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction(nameof(ChapterIndex));
+                }
+            }
+            return View(chapter);
+        }
+        public async Task<IActionResult> ChapterDetalis(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var ChapterId = await db.chapters.Include(x => x.Lesson).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Lesson = new SelectList(db.lessons, "ID", "Name");
+            return View(ChapterId);
+        }
+        public async Task<IActionResult> ChapterDelete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var ChapterID = await db.chapters.FindAsync(id);
+
+            db.chapters.Remove(ChapterID);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(StageIndex));
+        }
+
+        #endregion
+
+
 
         public IActionResult CalendarAR()
         {

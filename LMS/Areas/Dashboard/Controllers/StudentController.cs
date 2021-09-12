@@ -71,9 +71,11 @@ namespace LMS.Areas.Dashboard.Controllers
         public IActionResult Edit(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var SectionID = user.Level.Stage.SectionId;
+            var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
-            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c => c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
             return View(user);
         }
         [HttpPost]
@@ -118,9 +120,11 @@ namespace LMS.Areas.Dashboard.Controllers
         public IActionResult Details(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var SectionID = user.Level.Stage.SectionId;
+            var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
-            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c => c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
             return View(user);
         }
 

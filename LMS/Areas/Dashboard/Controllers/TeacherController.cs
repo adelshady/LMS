@@ -33,9 +33,11 @@ namespace LMS.Areas.Dashboard.Controllers
         public ActionResult Details(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var SectionID = user.Level.Stage.SectionId;
+            var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
-            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c=>c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
             return View(user);
         }
 
@@ -84,9 +86,11 @@ namespace LMS.Areas.Dashboard.Controllers
         public ActionResult Edit(int ID)
         {
             var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var SectionID = user.Level.Stage.SectionId;
+            var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
-            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c => c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
             return View(user);
         }
 
@@ -97,9 +101,10 @@ namespace LMS.Areas.Dashboard.Controllers
         {
             var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
 
-            users.LevelId = Convert.ToInt32(Request.Form["Level"]);
-            var Listlevel = db.levels.Find(users.LevelId);
-            user.Level = Listlevel;
+            //users.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            //var Listlevel = db.levels.Find(users.LevelId);
+            //user.Level = Listlevel;
+
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -124,8 +129,8 @@ namespace LMS.Areas.Dashboard.Controllers
             user.phone = users.phone;
             user.status = users.status;
             user.LevelId = users.LevelId;
-            user.Level.StageId = users.Level.StageId;
-            user.Level.Stage.SectionId = users.Level.Stage.SectionId;
+            //user.Level.StageId = users.Level.StageId;
+            //user.Level.Stage.SectionId = users.Level.Stage.SectionId;
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

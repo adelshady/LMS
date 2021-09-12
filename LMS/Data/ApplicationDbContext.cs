@@ -23,7 +23,13 @@ namespace LMS.Data
         public DbSet<Level> levels { get; set; }
         public DbSet<User> users{ get; set; }
         public DbSet<Course> courses { get; set; }
+        public DbSet<Quiz> Quiz{ get; set; }
 
+        public DbSet<QuestionType> QuestionType{ get; set; }
+
+        public DbSet<Answer> Answer { get; set; }
+        public DbSet<QuizDetails> QuizDetails { get; set; }
+        public DbSet<Question> Questions { get; set; }
 
     }
 }

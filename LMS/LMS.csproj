@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Dashboard\Views\Admin\AR\" />
     <Folder Include="wwwroot\assets\plugins\calendar2\" />
   </ItemGroup>
 
