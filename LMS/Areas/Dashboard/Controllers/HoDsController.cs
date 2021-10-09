@@ -25,14 +25,14 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: HoDsController
         public ActionResult Index()
         {
-            var HoDs = db.users.Include(x => x.Level).Include(x=>x.Level.Stage).Include(x=>x.Level.Stage.Section).Where(x => x.JobType == "HoDs").ToList();
+            var HoDs = db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).ToList();
             return View(HoDs);
         }
 
         // GET: HoDsController/Details/5
         public ActionResult Details(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -53,13 +53,13 @@ namespace LMS.Areas.Dashboard.Controllers
         // POST: HoDsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(IFormCollection collection , User user)
+        public async Task<ActionResult> Create(IFormCollection collection, HoDs user)
         {
             user.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(user.LevelId);
             user.Level = Listlevel;
-            string role = Request.Form["JobType"];
-            user.JobType = role;
+            //string role = Request.Form["JobType"];
+            //user.JobType = role;
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -77,7 +77,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId + ".jpg");
                 user.image = @"\images\" + user.NationalId + ".jpg";
             }
-            db.users.Add(user);
+            db.HoDs.Add(user);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -85,7 +85,7 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: HoDsController/Edit/5
         public ActionResult Edit(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -97,9 +97,9 @@ namespace LMS.Areas.Dashboard.Controllers
         // POST: HoDsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async Task<ActionResult> Edit(int ID, IFormCollection collection,User users)
+        public async Task<ActionResult> Edit(int ID, IFormCollection collection, HoDs users)
         {
-            var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
+            var user = await db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
 
             users.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(users.LevelId);
@@ -124,7 +124,6 @@ namespace LMS.Areas.Dashboard.Controllers
             }
             user.Name = users.Name;
             user.NationalId = users.NationalId;
-            user.ParentName = users.ParentName;
             user.phone = users.phone;
             user.status = users.status;
             user.LevelId = users.LevelId;
@@ -137,7 +136,7 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: HoDsController/Delete/5
         public ActionResult Delete(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             return View(user);
         }
 
@@ -146,7 +145,7 @@ namespace LMS.Areas.Dashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int ID, IFormCollection collection)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.HoDs.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             string webRootPath = webHostEnvironment.WebRootPath;
 
             var imagePath = Path.Combine(webRootPath, user.image.TrimStart('\\'));
@@ -154,7 +153,7 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 System.IO.File.Delete(imagePath);
             }
-            db.users.Remove(user);
+            db.HoDs.Remove(user);
             await db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

@@ -1,5 +1,6 @@
 ﻿using LMS.Data;
 using LMS.Models;
+using LMS.Models.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,61 +8,68 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
 namespace LMS.Areas.Dashboard.Controllers
 {
-    
+
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext db;
         public readonly IWebHostEnvironment webHostEnvironment;
-        public AdminController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AdminController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             this.db = db;
             webHostEnvironment = _webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
-        #region Register
+        //#region Register
 
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ActionName("Register")]
-        public async Task<IActionResult> register(Register register, IFormCollection formValues)
-        {
-            string webrootpath = webHostEnvironment.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count > 0)
-            {
-                var uploads = Path.Combine(webrootpath, "images");
-              
-                using (var filesStream = new FileStream(Path.Combine(uploads, files[0].FileName), FileMode.Create))
-                {
-                    files[0].CopyTo(filesStream);
-                }
-                register.image = @"\images\" + files[0].FileName ;
-            }
-            else
-            {
-                var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
-                System.IO.File.Copy(uploads, webrootpath + @"\images\" + "Avatar.jpg");
-                register.image = @"\images\" + "Avatar.jpg";
-            }
-            db.registers.Add(register);
-            await db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        #endregion
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ActionName("Register")]
+        //public async Task<IActionResult> register(Register register, IFormCollection formValues)
+        //{
+        //    string webrootpath = webHostEnvironment.WebRootPath;
+        //    var files = HttpContext.Request.Form.Files;
+        //    if (files.Count > 0)
+        //    {
+        //        var uploads = Path.Combine(webrootpath, "images");
+
+        //        using (var filesStream = new FileStream(Path.Combine(uploads, files[0].FileName), FileMode.Create))
+        //        {
+        //            files[0].CopyTo(filesStream);
+        //        }
+        //        register.image = @"\images\" + files[0].FileName;
+        //    }
+        //    else
+        //    {
+        //        var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
+        //        System.IO.File.Copy(uploads, webrootpath + @"\images\" + "Avatar.jpg");
+        //        register.image = @"\images\" + "Avatar.jpg";
+        //    }
+        //    db.registers.Add(register);
+        //    await db.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+        //#endregion
         public IActionResult Index()
         {
             return View();
         }
+
+
+
         #region Login
         [HttpGet]
         public IActionResult Login()
@@ -69,14 +77,16 @@ namespace LMS.Areas.Dashboard.Controllers
             return View();
         }
         [HttpPost]
-        public  IActionResult Login(User user)
+        public IActionResult Login(Student user)
         {
-            var users =  db.users.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault(); 
-            if(user == null)
+            var users = db.students.Where(x => x.Email == user.Email && x.Password == user.Password).FirstOrDefault();
+            if (user == null)
             {
                 ViewBag.message = "UserName or Password incorrect";
 
             }
+            HttpContext.Session.SetInt32("UserID", users.ID);
+            HttpContext.Session.SetString("UserName", users.Name);
             return RedirectToAction(nameof(Index));
         }
         #endregion
@@ -190,7 +200,7 @@ namespace LMS.Areas.Dashboard.Controllers
             if (ModelState.IsValid)
             {
                 var ExitedSubSection = db.stages.Include(x => x.Section).Where(x => x.Name == stage.Name);
-                ViewBag.Section = new SelectList(db.stages.Where(X=>X.SectionId==stage.SectionId), "ID", "Name");
+                ViewBag.Section = new SelectList(db.stages.Where(X => X.SectionId == stage.SectionId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Section exited please use another name";
@@ -211,8 +221,8 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-            var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
-            ViewBag.Section = new SelectList(db.stages.Where(x=>x.SectionId==StageId.SectionId), "ID", "Name");
+            var StageId = await db.stages.Include(x => x.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Section = new SelectList(db.stages.Where(x => x.SectionId == StageId.SectionId), "ID", "Name");
             if (StageId == null)
             {
                 return NotFound();
@@ -247,8 +257,8 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-            var StageId = await db.stages.Include(x=>x.Section).SingleOrDefaultAsync(x=>x.ID==id);
-            ViewBag.Section = new SelectList(db.stages.Where(x=>x.SectionId== StageId.SectionId), "ID", "Name");
+            var StageId = await db.stages.Include(x => x.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Section = new SelectList(db.stages.Where(x => x.SectionId == StageId.SectionId), "ID", "Name");
             return View(StageId);
         }
         public async Task<IActionResult> StageDelete(int? id)
@@ -267,10 +277,10 @@ namespace LMS.Areas.Dashboard.Controllers
 
 
         #region Level
-          public IActionResult LevelIndex()
+        public IActionResult LevelIndex()
         {
             var level = db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).ToList();
-            return View(level) ;
+            return View(level);
         }
         [HttpGet]
         public IActionResult LevelCreate()
@@ -283,8 +293,8 @@ namespace LMS.Areas.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
-                ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==level.StageId), "ID", "Name");
+                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).Where(x => x.Name == level.Name);
+                ViewBag.Stage = new SelectList(db.levels.Where(x => x.StageId == level.StageId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
                 {
                     ViewBag.message = "Level Name exited please use another name";
@@ -304,8 +314,8 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-            var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
-            ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==levelId.StageId), "ID", "Name");
+            var levelId = await db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Stage = new SelectList(db.levels.Where(x => x.StageId == levelId.StageId), "ID", "Name");
             if (levelId == null)
             {
                 return NotFound();
@@ -317,7 +327,7 @@ namespace LMS.Areas.Dashboard.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).Where(x => x.Name == level.Name);
+                var ExitedSubSection = db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).Where(x => x.Name == level.Name);
                 var levelID = await db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
                 ViewBag.Stage = new SelectList(db.levels.Where(x => x.StageId == levelID.StageId), "ID", "Name");
                 if (ExitedSubSection.Count() > 0)
@@ -341,8 +351,8 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-            var levelId = await db.levels.Include(x => x.Stage).Include(x=>x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
-            ViewBag.Stage = new SelectList(db.levels.Where(x=>x.StageId==levelId.StageId), "ID", "Name");
+            var levelId = await db.levels.Include(x => x.Stage).Include(x => x.Stage.Section).SingleOrDefaultAsync(x => x.ID == id);
+            ViewBag.Stage = new SelectList(db.levels.Where(x => x.StageId == levelId.StageId), "ID", "Name");
             return View(levelId);
         }
         public async Task<IActionResult> LevelDelete(int? id)
@@ -359,7 +369,6 @@ namespace LMS.Areas.Dashboard.Controllers
         }
 
         #endregion
-
 
         #region Lesson
         public IActionResult LessonIndex()
@@ -402,7 +411,7 @@ namespace LMS.Areas.Dashboard.Controllers
             return View(lesson);
         }
         [HttpPost]
-        public async Task<IActionResult> LessonEdit(int id,Lesson lesson)
+        public async Task<IActionResult> LessonEdit(int id, Lesson lesson)
         {
             db.Update(lesson);
             await db.SaveChangesAsync();
@@ -414,7 +423,7 @@ namespace LMS.Areas.Dashboard.Controllers
             var LessonId = db.lessons.Find(id);
             return View(LessonId);
         }
-        
+
         public async Task<IActionResult> LessonDelete(int? id)
         {
             if (id == null)
@@ -427,7 +436,6 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(LessonIndex));
         }
         #endregion
-
 
         #region Chapter
 
@@ -471,7 +479,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 return NotFound();
             }
             var ChapterId = await db.chapters.Include(x => x.Lesson).SingleOrDefaultAsync(x => x.ID == id);
-            ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId== ChapterId.LessonId), "ID", "Name");
+            ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId == ChapterId.LessonId), "ID", "Name");
             if (ChapterId == null)
             {
                 return NotFound();
@@ -485,7 +493,7 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 var ExitedChapterId = db.chapters.Include(x => x.Lesson).Where(x => x.Name == chapter.Name);
                 var ChapterId = await db.chapters.Include(x => x.Lesson).SingleOrDefaultAsync(x => x.ID == id);
-                ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId== ChapterId.LessonId), "ID", "Name");
+                ViewBag.Lesson = new SelectList(db.chapters.Where(x => x.LessonId == ChapterId.LessonId), "ID", "Name");
                 if (ExitedChapterId.Count() > 0)
                 {
                     ViewBag.message = "Chapter Name exited please use another name";
@@ -525,12 +533,255 @@ namespace LMS.Areas.Dashboard.Controllers
 
         #endregion
 
-
-
-        public IActionResult CalendarAR()
+        #region Events
+        public IActionResult EventIndex()
+        {
+            var events = db.events.ToList();
+            return View(events);
+        }
+        public IActionResult EventCreate()
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> EventCreate(Events events)
+        {
+            var ExitedEvents = db.events.Where(x => x.Name == events.Name);
+
+            if (ExitedEvents.Count() > 0)
+            {
+                ViewBag.message = "Events exited please use another name";
+            }
+            else
+            {
+                db.events.Add(events);
+                await db.SaveChangesAsync();
+                return RedirectToAction(nameof(EventIndex));
+            }
+            return View(events);
+        }
+        public IActionResult EventEdit(int id)
+        {
+            var EventID = db.events.Find(id);
+            return View(EventID);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EventEdit(Events events)
+        {
+            db.events.Update(events);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(EventIndex));
+        }
+
+        public async Task<IActionResult> EventDelete(int id)
+        {
+            var EventsID = db.events.Find(id);
+            db.events.Remove(EventsID);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(EventIndex));
+        }
+        #endregion
+
+        //#region Tasks
+        //public IActionResult TaskIndex()
+        //{
+        //    var TasksList = db.tasks.ToList();
+        //    return View(TasksList);
+        //}
+        //public IActionResult TaskCreate()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> TaskCreate(Tasks tasks)
+        //{
+        //    var ExitedTasks = db.tasks.Where(x => x.Name == tasks.Name);
+
+        //    if (ExitedTasks.Count() > 0)
+        //    {
+        //        ViewBag.message = "Tasks exited please use another name";
+        //    }
+        //    else
+        //    {
+        //        db.tasks.Add(tasks);
+        //        await db.SaveChangesAsync();
+        //        return RedirectToAction(nameof(TaskIndex));
+        //    }
+        //    return View(tasks);
+        //}
+        //public IActionResult TaskEdit(int id)
+        //{
+        //    var TaskID = db.tasks.Find(id);
+        //    return View(TaskID);
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> TaskEdit(Tasks tasks)
+        //{
+        //    db.tasks.Update(tasks);
+        //    await db.SaveChangesAsync();
+        //    return RedirectToAction(nameof(TaskIndex));
+        //}
+
+        //public async Task<IActionResult> TaskDelete(int id)
+        //{
+        //    var TasksID = db.tasks.Find(id);
+        //    db.tasks.Remove(TasksID);
+        //    await db.SaveChangesAsync();
+        //    return RedirectToAction(nameof(TaskIndex));
+        //}
+        //#endregion
+
+        #region Chat
+        public async Task<IActionResult> Chat()
+        {
+
+            var UserName = HttpContext.Session.GetString("UserName");
+            var CurrentUser = await db.users.Where(x => x.Name == UserName).FirstOrDefaultAsync();
+            ViewBag.CurrentUserName = CurrentUser.Name;
+
+            var message = await db.message.Where(x => x.FromUserId == CurrentUser.ID).ToListAsync();
+            return View(message);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateChat(Message message)
+        {
+            var UserID = HttpContext.Session.GetInt32("UserID");
+            var UserName = HttpContext.Session.GetString("UserName");
+            var CurrentUser = await db.users.Where(x => x.Name == UserName).FirstOrDefaultAsync();
+
+            message.DateInserted = DateTime.Now;
+            message.ToUserId = (int)UserID;
+            message.FromUserId = CurrentUser.ID;
+            await db.message.AddAsync(message);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(Chat));
+        }
+
+        #endregion
+
+        #region Calendar
+        public IActionResult CalendarIndex()
+        {
+            var calendar = db.calendars.Include(x => x.Level).Include(x => x.Events).ToList();
+            return View(calendar);
+        }
+
+        public IActionResult CalendarCreate()
+        {
+            List<CheckBoxItem> lstchk = new List<CheckBoxItem>()
+            {
+                new CheckBoxItem {TasksId =1 ,Name="Teacher"},
+                new CheckBoxItem {TasksId =2 ,Name="HoDs"},
+                 new CheckBoxItem {TasksId =3 ,Name="Student"},
+                new CheckBoxItem {TasksId =4 ,Name="Parent"}
+            };
+
+            var model = new CalendarAndTasks
+            {
+                checkBoxItems = lstchk
+            };
+
+            ViewBag.Events = new SelectList(db.events, "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult CalendarCreate(CalendarAndTasks calendarAndTasks)
+        {
+
+            calendarAndTasks.calendar.CategoryIds = Request.Form["CategoryIds"];
+            calendarAndTasks.calendar.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(calendarAndTasks.calendar.LevelId);
+            calendarAndTasks.calendar.Level = Listlevel;
+
+
+            var day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(calendarAndTasks.Day);
+            if (day == DayOfWeek.Saturday)
+            {
+                calendarAndTasks.calendar.day = "Saturday";
+
+            }
+            else if (day == DayOfWeek.Sunday)
+            {
+                calendarAndTasks.calendar.day = "Sunday";
+            }
+            else if (day == DayOfWeek.Monday)
+            {
+                calendarAndTasks.calendar.day = "Monday";
+            }
+            else if (day == DayOfWeek.Tuesday)
+            {
+                calendarAndTasks.calendar.day = "Tuesday";
+            }
+            else if (day == DayOfWeek.Thursday)
+            {
+                calendarAndTasks.calendar.day = "Thursday";
+            }
+            else if (day == DayOfWeek.Wednesday)
+            {
+                calendarAndTasks.calendar.day = "Wednesday";
+            }
+            else if (day == DayOfWeek.Friday)
+            {
+                calendarAndTasks.calendar.day = "Friday";
+            }
+          
+
+            if (string.IsNullOrEmpty(calendarAndTasks.calendar.CategoryIds))  //this is used when no checkbox is checked
+            {
+                calendarAndTasks.calendar.CategoryIds = "None,None";
+            }
+
+            db.calendars.Add(calendarAndTasks.calendar);
+            db.SaveChanges();
+
+            return RedirectToAction(nameof(CalendarIndex));
+        }
+
+        public IActionResult CalendarEdit(int id)
+        {
+            List<CheckBoxItem> lstchk = new List<CheckBoxItem>()
+            {
+                new CheckBoxItem {TasksId =1 ,Name="Teacher"},
+                new CheckBoxItem {TasksId =2 ,Name="HoDs"},
+                 new CheckBoxItem {TasksId =3 ,Name="Student"},
+                new CheckBoxItem {TasksId =4 ,Name="Parent"}
+             };
+            var categorylist = db.calendars.FirstOrDefault();
+            var model = new CalendarAndTasks
+            {
+                calendar = db.calendars.Include(x => x.Level).Include(x => x.Events).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == id).FirstOrDefault(),
+
+                checkBoxItems = lstchk,
+                CategoryIds = categorylist.CategoryIds.Split(',')/*.Split(',')*///here get your comma separated list from database and assign it to the CategoryIds string array, i have used sample text for the values
+            };
+            var SectionID = model.calendar.Level.Stage.SectionId;
+            var StageID = model.calendar.Level.StageId;
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c => c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
+            ViewBag.Events = new SelectList(db.events, "ID", "Name");
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult CalendarEdit(CalendarAndTasks calendarAndTasks)
+        {
+            calendarAndTasks.calendar.CategoryIds = Request.Form["CategoryIds"];
+            calendarAndTasks.calendar.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(calendarAndTasks.calendar.LevelId);
+            calendarAndTasks.calendar.Level = Listlevel;
+            if (string.IsNullOrEmpty(calendarAndTasks.calendar.CategoryIds))  //this is used when no checkbox is checked
+            {
+                calendarAndTasks.calendar.CategoryIds = "None,None";
+            }
+            db.calendars.Add(calendarAndTasks.calendar);
+            db.SaveChanges();
+            return RedirectToAction(nameof(CalendarIndex));
+        }
+
+        #endregion
 
 
         public IActionResult Profile()
@@ -540,37 +791,6 @@ namespace LMS.Areas.Dashboard.Controllers
 
         // another Profile 
         public IActionResult DetalisP()
-        {
-            return View();
-        }
-
-
-        public IActionResult Student()
-        {
-            return View();
-        }
-
-        public IActionResult Parent()
-        {
-            return View();
-        }
-
-        public IActionResult Teacher()
-        {
-            return View();
-        }
-
-        public IActionResult HoDs()
-        {
-            return View();
-        }
-
-        public IActionResult admin()
-        {
-            return View();
-        }
-
-        public IActionResult Course()
         {
             return View();
         }
@@ -586,10 +806,10 @@ namespace LMS.Areas.Dashboard.Controllers
         }
 
 
-        public IActionResult Chat()
-        {
-            return View();
-        }
+        //public IActionResult Chat()
+        //{
+        //    return View();
+        //}
 
         public IActionResult library()
         {

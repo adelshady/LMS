@@ -1,10 +1,13 @@
 using LMS.Data;
+using LMS.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -25,12 +28,25 @@ namespace LMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+
+            services.AddHttpContextAccessor();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+
+            services.AddSignalR();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -54,9 +70,13 @@ namespace LMS
             app.UseStaticFiles();
           //  app.UseSession();
             app.UseRouting();
+            app.UseSession(); 
 
-         
-            
+            app.UseSignalR( route =>
+            {
+                route.MapHub<ChatHub>("/Admin/Chat");
+            });
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

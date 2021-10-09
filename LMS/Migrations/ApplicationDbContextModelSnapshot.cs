@@ -19,6 +19,57 @@ namespace LMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("LMS.Models.Admin", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NationalId")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("phone")
+                        .HasColumnType("float");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("admins");
+                });
+
             modelBuilder.Entity("LMS.Models.Answer", b =>
                 {
                     b.Property<int>("ID")
@@ -26,22 +77,60 @@ namespace LMS.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Answer1")
+                    b.Property<string>("AnswerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Answer2")
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answer");
+                });
+
+            modelBuilder.Entity("LMS.Models.Calendar", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("CategoryIds")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Answer3")
+                    b.Property<int>("EventID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FinalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Answer4")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("day")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Answer");
+                    b.HasIndex("EventID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("calendars");
                 });
 
             modelBuilder.Entity("LMS.Models.Chapter", b =>
@@ -80,10 +169,16 @@ namespace LMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("HoDsId")
+                        .HasColumnType("int");
+
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -93,6 +188,72 @@ namespace LMS.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("courses");
+                });
+
+            modelBuilder.Entity("LMS.Models.Events", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("events");
+                });
+
+            modelBuilder.Entity("LMS.Models.HoDs", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NationalId")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("phone")
+                        .HasColumnType("float");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("HoDs");
                 });
 
             modelBuilder.Entity("LMS.Models.Lesson", b =>
@@ -131,15 +292,65 @@ namespace LMS.Migrations
                     b.ToTable("levels");
                 });
 
+            modelBuilder.Entity("LMS.Models.Message", b =>
+                {
+                    b.Property<int>("IDMessage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateInserted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FromUserId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("MessageRead")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ToUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IDMessage");
+
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("ToUserId");
+
+                    b.ToTable("message");
+                });
+
+            modelBuilder.Entity("LMS.Models.MessageThread", b =>
+                {
+                    b.Property<int>("IDMessageInitial")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IDMessageReply")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateInserted")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("IDMessageInitial", "IDMessageReply");
+
+                    b.HasIndex("IDMessageReply");
+
+                    b.ToTable("messageThread");
+                });
+
             modelBuilder.Entity("LMS.Models.Question", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
 
                     b.Property<string>("BestAnswer")
                         .IsRequired()
@@ -155,12 +366,13 @@ namespace LMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuestionId")
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AnswerId");
 
                     b.HasIndex("QuestionId");
 
@@ -310,7 +522,7 @@ namespace LMS.Migrations
                     b.ToTable("stages");
                 });
 
-            modelBuilder.Entity("LMS.Models.User", b =>
+            modelBuilder.Entity("LMS.Models.Student", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -330,8 +542,126 @@ namespace LMS.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("JobType")
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NationalId")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ParentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("phone")
+                        .HasColumnType("float");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("students");
+                });
+
+            modelBuilder.Entity("LMS.Models.Tasks", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("tasks");
+                });
+
+            modelBuilder.Entity("LMS.Models.Teacher", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NationalId")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("phone")
+                        .HasColumnType("float");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("teachers");
+                });
+
+            modelBuilder.Entity("LMS.Models.User", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LevelId")
@@ -369,6 +699,47 @@ namespace LMS.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("LMS.Models.Admin", b =>
+                {
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
+                });
+
+            modelBuilder.Entity("LMS.Models.Answer", b =>
+                {
+                    b.HasOne("LMS.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("LMS.Models.Calendar", b =>
+                {
+                    b.HasOne("LMS.Models.Events", "Events")
+                        .WithMany()
+                        .HasForeignKey("EventID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Events");
+
+                    b.Navigation("Level");
+                });
+
             modelBuilder.Entity("LMS.Models.Chapter", b =>
                 {
                     b.HasOne("LMS.Models.Lesson", "Lesson")
@@ -388,15 +759,30 @@ namespace LMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LMS.Models.User", "User")
+                    b.HasOne("LMS.Models.HoDs", "HoDs")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("LMS.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("HoDs");
+
+                    b.Navigation("Level");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("LMS.Models.HoDs", b =>
+                {
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Level");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LMS.Models.Level", b =>
@@ -410,21 +796,49 @@ namespace LMS.Migrations
                     b.Navigation("Stage");
                 });
 
+            modelBuilder.Entity("LMS.Models.Message", b =>
+                {
+                    b.HasOne("LMS.Models.User", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LMS.Models.User", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("ToUser");
+                });
+
+            modelBuilder.Entity("LMS.Models.MessageThread", b =>
+                {
+                    b.HasOne("LMS.Models.Message", "MessageInitial")
+                        .WithMany()
+                        .HasForeignKey("IDMessageInitial")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LMS.Models.Message", "MessageReply")
+                        .WithMany()
+                        .HasForeignKey("IDMessageReply")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MessageInitial");
+
+                    b.Navigation("MessageReply");
+                });
+
             modelBuilder.Entity("LMS.Models.Question", b =>
                 {
-                    b.HasOne("LMS.Models.Answer", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LMS.Models.QuestionType", "QuestionType")
                         .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Answer");
+                        .HasForeignKey("QuestionId");
 
                     b.Navigation("QuestionType");
                 });
@@ -457,6 +871,28 @@ namespace LMS.Migrations
                         .IsRequired();
 
                     b.Navigation("Section");
+                });
+
+            modelBuilder.Entity("LMS.Models.Student", b =>
+                {
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
+                });
+
+            modelBuilder.Entity("LMS.Models.Teacher", b =>
+                {
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("LMS.Models.User", b =>

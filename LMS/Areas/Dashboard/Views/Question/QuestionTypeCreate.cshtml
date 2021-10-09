@@ -1,0 +1,49 @@
+﻿@model QuestionType
+@{
+    ViewData["Title"] = "QuestionTypeCreate";
+}
+
+<br />
+<h2 class="text-info">Create QuestionType</h2>
+<br />
+
+<br />
+@if (@ViewBag.message == null)
+{
+    <form method="post" asp-action="QuestionTypeCreate">
+        <div class=" border backgroundWhite">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row">
+
+                <div class="col-2">
+                    <label asp-for="Name" class="col-form-label"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="Name" class="form-control" />
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-5 offset-2">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="submit" class="btn btn-info form-control" value="Create" />
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="QuestionTypeIndex" class="btn btn-success form-control">Back To List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Question Type exited please use another name
+    </div>
+
+}

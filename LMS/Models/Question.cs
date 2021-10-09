@@ -19,14 +19,10 @@ namespace LMS.Models
         public int Degree { get; set; }
         public string Image { get; set; }
         [Required]
-        [Display(Name ="Question")]
-        public int QuestionId { get; set; }
+        [Display(Name ="Question Type")]
+        public int QuestionTypeId { get; set; }
         [ForeignKey("QuestionId")]
         public virtual QuestionType QuestionType { get; set; }
-        [Required]
-        [Display(Name ="Answer")]
-        public int AnswerId { get; set; }
-        [ForeignKey("AnswerId")]
-        public virtual Answer Answer { get; set; }
+       
     }
 }

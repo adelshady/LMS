@@ -22,10 +22,15 @@ namespace LMS.Models
         public virtual Level Level { get; set; }
 
         [Required]
-        [Display(Name = "User")]
-        public int UserId { get; set; }
+        [Display(Name = "Teacher")]
+        public int TeacherId { get; set; }
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual Teacher Teacher { get; set; }
+        [Required]
+        [Display(Name = "HoDs")]
+        public int HoDsId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual HoDs HoDs { get; set; }
 
     }
 }

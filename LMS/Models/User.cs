@@ -28,16 +28,11 @@ namespace LMS.Models
         [Required]
         public double NationalId { get; set; }
         [Required]
-        [Display(Name ="Job Type")]
-        public string JobType { get; set; }
-        [Required]
         public string status { get; set; }
         [Required]
-        [Display(Name ="Level")]
+        [Display(Name = "Level")]
         public int LevelId { get; set; }
         [ForeignKey("LevelId")]
         public virtual Level Level { get; set; }
-
-      
     }
 }

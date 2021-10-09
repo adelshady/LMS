@@ -1,5 +1,6 @@
 ﻿using LMS.Data;
 using LMS.Models;
+using LMS.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,8 +22,8 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: CourseController
         public ActionResult Index()
         {
-            var courses = db.courses.Include(x => x.Level).Include(x=>x.Level.Stage).Include(x=>x.Level.Stage.Section).Include(x => x.User)
-                .Where(x=>x.User.JobType=="Teacher" || x.User.JobType=="HoDs").ToList();
+            var courses = db.courses.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section)
+                .Include(x => x.HoDs).Include(x=>x.Teacher).ToList();
             return View(courses);
         }
 
@@ -38,8 +39,14 @@ namespace LMS.Areas.Dashboard.Controllers
             ViewBag.level = new SelectList(db.levels, "ID", "Name");
             ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            var user = db.courses.Include(x=>x.User).Where(x => x.User.JobType == "Teacher").ToList();
-            ViewBag.User = user;
+            //TeacherAndHoDsVm teacherAndHoDsVm = new TeacherAndHoDsVm();
+            //teacherAndHoDsVm.GetTeacherList = db.teachers.Select(x => new TeacherAndHoDsVm
+            //{
+            //    TeacherId = x.ID,
+            //    TeacherName= x.Name
+            //}).ToList();
+
+            var user = db.courses.Include(x => x.HoDs).Include(x=>x.Teacher).ToList();
             return View(user);
         }
 
@@ -49,9 +56,9 @@ namespace LMS.Areas.Dashboard.Controllers
         public async Task<ActionResult> Create(Course course)
         {
 
-          course.User.LevelId = Convert.ToInt32(Request.Form["Level"]);
-            var Listlevel = db.levels.Find(course.User.LevelId);
-          course.User.Level = Listlevel;
+            course.Teacher.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(course.Teacher.LevelId);
+            course.Teacher.Level = Listlevel;
 
             db.courses.Add(course);
             await db.SaveChangesAsync();

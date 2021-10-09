@@ -1,75 +1,104 @@
-﻿@model LMS.Models.QuizDetails
+﻿@model LMS.Models.ViewModel.QuizDetailsVM
 
 @{
     ViewData["Title"] = "QuizDetailsCreate";
+
 }
 
 <hr />
 
-<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
-
-<!-- Main css -->
-<link rel="stylesheet" href="~/Register/css/style.css">
-
 <div class="main">
     <div class="container">
         <div class="signup-content">
-            <div class="signup-img">
-                <img src="~/Register/images/signup-img.jpg" alt="">
-            </div>
+            @*<div class="signup-img">
+                    <img src="~/Register/images/signup-img.jpg" alt="">
+                </div>*@
             <div class="signup-form">
                 <form method="post" asp-action="QuizDetailsCreate" enctype="multipart/form-data" id="register-form">
                     <h2>QuizDetailsCreate </h2>
-
+                    <input type="hidden" asp-for="QuizDetails.QuestionId" />
+                    <input type="hidden" asp-for="QuizDetails.ID" />
+                    <input type="hidden" asp-for="QuizDetails.Question.QuestionTypeId" />
                     <div class="form-group">
-                        <label for="name">Name :</label>
-                        <input type="text" name="Name" id="name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Start Time :</label>
-                        <input type="datetime" name="StartTime" id="name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">received Time</label>
-                        <input type="datetime" name="receivedTime" id="email" />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Attempts :</label>
-                        <input type="number" name="Attempts" placeholder="6 Attempts only" id="address" required />
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Chapter</label>
-                        <select asp-for="@Model.ChapterId" id="ChapterId" asp-items="@ViewBag.Chapter" class="form-control" required>
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Lesson</label>
-                        <select asp-for="@Model.Chapter.LessonId" id="LessonId" asp-items="@ViewBag.Lesson" class="form-control" required>
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Question Type </label>
-                        <select asp-for="@Model.QuestionId"  id="QuestionId" asp-items="@ViewBag.QuestionType" class="form-control" required>
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Question Name</label>
-                        <input type="text" asp-for="Question.Name" required />
+                        @Html.LabelFor(model => model.QuizDetails.Name)
+                        @Html.TextBoxFor(model => model.QuizDetails.Name, htmlAttributes: new { @class = "form-control" })
                     </div>
                     @*<div class="form-group">
-                        <label for="address">Answer Name</label>
-                        <input type="text" asp-for="Question.Answer.Name" required />
-                    </div>*@
-                    <div class="form-group">
-                        <label for="address">Image for Answer :</label>
-                        <input type="file" asp-for="Question.Image" />
+                        @Html.LabelFor(model => model.QuizDetails.StartTime)
+                        <input type="datetime-local" name="StartTime" />
                     </div>
+
                     <div class="form-group">
-                        <label for="address">Degree:</label>
-                        <input type="text" asp-for="Question.Degree" />
+                        @Html.LabelFor(model => model.QuizDetails.receivedTime)
+                        <input type="datetime-local" name="receivedTime" />
+                    </div>*@
+
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="Question.BestAnswer" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="Question.BestAnswer" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Question.BestAnswer" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="AnswerName" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="AnswerName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AnswerName" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="AnswerName" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="AnswerName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AnswerName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-2">
+                            <label asp-for="AnswerName" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="AnswerName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AnswerName" class="text-danger"></span>
+                    </div>
+
+
+                    @*<div class="form-group">
+            @Html.LabelFor(model => model.Attempts)
+            <input type="number" name="Attempts" />
+        </div>*@
+
+                    <div class="form-group">
+                        <label class="control-label">Chapter</label>
+                        <select asp-for="@Model.QuizDetails.ChapterId" id="ChapterId" asp-items="@ViewBag.Chapter" class="form-control" required>
+                            <option value="">Select your Chapter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Lesson</label>
+                        <select asp-for="@Model.QuizDetails.Chapter.LessonId" id="LessonId" asp-items="@ViewBag.Lesson" class="form-control" required>
+                            <option value="">Select your Lesson</option>
+                        </select>
                     </div>
 
                     <div class="form-submit">
@@ -83,35 +112,157 @@
 
 </div>
 
+@*<--!register>></--!register>*@
 
-<--!register>></--!register>
-<script src="~/Register/vendor/jquery/jquery.min.js"></script>
-<script src="~/Register/js/main.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@*<script src="~/Register/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Register/js/main.js"></script>*@
+
 
 
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    //$(document).ready(function () {
+    //    $("#btnAddOption").click(function () {
+    //        AddOptionIntoList();
+    //    });
 
-        $('#ChapterId').change(function () {
-            getLesson();
-        });
-    });
+    //    //$("#btnSave").click(function () {
+    //    //    SaveQuestionAndOption();
+    //    //});
+    //});
+
+    //function SaveQuestionAndOption() {
+    //    if ($("#tblOption tr").length !== 4) {
+    //        alert("Option Should not more and less than  4 ");
+    //        return false;
+    //    }
+    //    var answerText = "";
+    //    var answerValid = undefined;
+    //    $.each($("#tblOption tr"),
+    //        function () {
+    //            answerText = $(this).find("td:eq(0) input[type=radio]:checked").val();
+    //            if (answerText != undefined) {
+    //                answerValid = answerText;
+    //            }
+    //        });
+    //    if (answerText == undefined) {
+    //        alert("Select the answer");
+    //        return false;
+    //    }
+
+
+    //    var ListOfOption = [];
+    //    var answerTextData = "";
+    //    var QuestionOption = "";
+    //    $.each($("#tblOption tr"),
+    //        function () {
+    //            answerText = $(this).find("td:eq(0) input[type=radio]:checked").val();
+    //            if (answerText != undefined) {
+    //                answerTextData = answerText;
+    //            }
+    //            ListOfOption.push(answerText);
+    //        });
+    //    QuestionOption.Options = ListOfOption;
+    //    QuestionOption.AnswerText = answerTextData;
+    //    QuestionOption.QuestionName = $("#txtQuestionName").val();
+
+    //    $.ajax({
+    //        async: true,
+    //        type: 'Post',
+    //        dataType: 'JSON',
+    //        data: JSON.stringify(QuestionOption),
+    //        url: '/Quiz/QuizDetailsCreate',
+    //        contentType: 'application/json; charset=utf-8',
+    //        success: function (data) {
+    //            if (data.success == true) {
+    //                alert(data.message);
+    //            }
+    //            else {
+    //                alert(data.message);
+    //            }
+    //        },
+    //        error: function () {
+    //            alert('There is some problem to process your request');
+    //        }
+    //    });
+    //}
+
+
+
+    //function AddOptionIntoList() {
+    //    if ($("#txtQuestionName").val() == "") {
+    //        alert("Question Name Should not be empty");
+    //        $("#txtQuestionName").focus();
+    //        return false;
+    //    }
+
+    //    if ($("#txtOptionName").val() == "") {
+    //        alert("Option Name Should not be empty");
+    //        $("#txtOptionName").focus();
+    //        return false;
+    //    }
+    //    if ($("#tblOption tr").length == 4) {
+    //        alert("Option Should not more than 4 ");
+    //        $("#txtOptionName").focus();
+    //        $("#txtOptionName").val("");
+    //        return false;
+    //    }
+        
+    //    var isSuccess = false;
+    //    $.each($("#tblOption tr"),
+    //        function () {
+    //            var listedValue = $(this).find("td:eq(0) input[type=radio]").val();
+    //            if (listedValue == $("#txtOptionName").val()) {
+    //                $("#txtOptionName").focus();
+    //                $("#txtOptionName").val("");
+    //                alert("Its already listed");
+    //                isSuccess = true;
+    //            }
+    //        });
+
+    //    if (isSuccess == true) {
+    //        return false;
+    //    }
+
+    //    var OptionName = $("#txtOptionName").val();
+    //    var rowAdded = "<tr><td> <input type='radio' id='OptionName" +
+    //        OptionName +
+    //        "'name='OptionName' />" +
+    //        OptionName +
+    //        "</td ></tr > ";
+
+    //    $("#tblOption").append(rowAdded);
+    //    $("#txtOptionName").focus();
+    //    $("#txtOptionName").val('');
+    //}
+
+
+    
+    //$(document).ready(function () {
+
+    //    $('#LessonId').change(function () {
+    //        getLesson();
+    //    });
+    //});
 
     function getLesson() {
 
         var url = '@Url.Content("~/")' + "Dashboard/Quiz/getLesson";
-        var ddlsource = '#ChapterId';
-        $("#LessonId").empty();
-        $("#LessonId").val('');
+        var ddlsource = '#LessonId';
+        $("#ChapterId").empty();
+        $("#ChapterId").val('');
         var items = "<option value=''> -- Select -- </option>";
         $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
             $.each(data, function (id, chapter) {
 
                 items += "<option value='" + chapter.value + "'>" + chapter.text + "</option>"
             });
-            $("#LessonId").html(items);
+            $("#ChapterId").html(items);
         });
     }
 

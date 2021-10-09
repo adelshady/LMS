@@ -13,6 +13,7 @@ namespace LMS.Models
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }
+
         public DateTime StartTime { get; set; }
         public DateTime receivedTime { get; set; }
 
@@ -22,7 +23,7 @@ namespace LMS.Models
         public int ChapterId { get; set; }
         [ForeignKey("ChapterId")]
         public virtual Chapter Chapter { get; set; }
-        [Required]
+        
         [Display(Name = "Question")]
         public int QuestionId { get; set; }
         [ForeignKey("QuestionId")]

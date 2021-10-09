@@ -1,4 +1,4 @@
-﻿@model LMS.Models.User
+﻿@model LMS.Models.Student
 @{
     ViewData["Title"] = "Edit";
     Layout = null;
@@ -24,73 +24,81 @@
                 @*<input type="hidden" asp-for="@Model.LevelId" />*@
                 @*<input type="hidden" asp-for="@Model.Level.StageId" />
                     <input type="hidden" asp-for="@Model.Level.Stage.SectionId" />*@
-                <form method="post" asp-action="Edit" enctype="multipart/form-data" id="register-form">
-                    <h2>Parent Details</h2>
-                    <div class="form-group">
-                        <label for="name">Name :</label>
-                        <input asp-for="Name" type="text" name="Name" id="name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Parent Name :</label>
-                        <input asp-for="ParentName" type="text" name="ParentName" id="name" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input asp-for="Email" type="email" name="Email" id="email" />
-                    </div>
+            <form method="post" asp-action="Edit" enctype="multipart/form-data" id="register-form">
+                <h2>Parent Details</h2>
+                <div class="form-group">
+                    <label for="name">Name :</label>
+                    <input asp-for="Name" type="text" name="Name" id="name" required />
+                </div>
+                <div class="form-group">
+                    <label for="name">Parent Name :</label>
+                    <input asp-for="ParentName" type="text" name="ParentName" id="name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input asp-for="Email" type="email" name="Email" id="email" />
+                </div>
 
-                    <div class="form-group">
-                        <label for="address">Address :</label>
-                        <input asp-for="Address" type="text" name="Address" id="address" required />
-                    </div>
+                <div class="form-group">
+                    <label for="address">Address :</label>
+                    <input asp-for="Address" type="text" name="Address" id="address" required />
+                </div>
 
-                    <div class="form-group">
-                        <label for="address">phone :</label>
-                        <input asp-for="phone" type="tel" name="phone" id="address" required />
-                    </div>
+                <div class="form-group">
+                    <label for="address">phone :</label>
+                    <input asp-for="phone" type="tel" name="phone" id="address" required />
+                </div>
 
-                    <div class="form-group">
-                        <label for="address">Gender :</label>
-                        <input asp-for="Gender" type="text" name="Gender" id="address" required />
-                    </div>
+                <div class="form-group">
+                    <label for="address">Gender :</label>
+                    <input asp-for="Gender" type="text" name="Gender" id="address" required />
+                </div>
 
-                    <div class="form-group">
-                        <label for="birth_date">DOB :</label>
-                        <input asp-for="BirthDay" type="date" name="BirthDay" id="birth_date">
+                <div class="form-group">
+                    <label for="birth_date">DOB :</label>
+                    <input asp-for="BirthDay" type="date" name="BirthDay" id="birth_date">
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="image" class="col-form-label"></label>
                     </div>
+                    <div class="col-5">
+                        <input type="file" name="files" multiple class="form-control" />
+                    </div>
+                    <span asp-validation-for="image" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="pincode">National Id :</label>
+                    <input asp-for="NationalId" type="text" name="NationalId" id="pincode">
+                </div>
+                <div class="form-group">
+                    <label for="pincode">status :</label>
+                    <input asp-for="status" type="text" name="status" placeholder="Active Or DisActive" id="pincode">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Section</label>
+                    <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="@ViewBag.Section" class="form-control">
+                        <option value="">Select your level</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Stage</label>
+                    <select asp-for="@Model.Level.StageId" id="StageId" asp-items="@ViewBag.Stage" class="form-control">
+                        <option value="">Select your level</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Level</label>
+                    <select asp-for="@Model.LevelId" name="Level" id="LevelId" asp-items="@ViewBag.level" class="form-control">
+                        <option value="">Select your level</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="pincode">National Id :</label>
-                        <input asp-for="NationalId" type="text" name="NationalId" id="pincode">
-                    </div>
-                    <div class="form-group">
-                        <label for="pincode">status :</label>
-                        <input asp-for="status" type="text" name="status" placeholder="Active Or DisActive" id="pincode">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Section</label>
-                        <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="@ViewBag.Section" class="form-control">
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Stage</label>
-                        <select asp-for="@Model.Level.StageId" id="StageId" asp-items="@ViewBag.Stage" class="form-control">
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Level</label>
-                        <select asp-for="@Model.LevelId" name="Level" id="LevelId" asp-items="@ViewBag.level" class="form-control">
-                            <option value="">Select your level</option>
-                        </select>
-                    </div>
-
-                    <div class="form-submit">
-                        <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
-                        <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
-                    </div>
-                </form>
+                <div class="form-submit">
+                    <input type="submit" value="Submit Form" class="submit" name="submit" id="submit" />
+                    <input type="submit" asp-action="Index" value="Back To List" class="submit" name="reset" id="reset" />
+                </div>
+            </form>
             </div>
         </div>
     </div>

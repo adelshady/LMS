@@ -25,18 +25,18 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: TeacherController
         public ActionResult Index()
         {
-            var teacher = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.JobType == "Teacher").ToList();
+            var teacher = db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).ToList();
             return View(teacher);
         }
 
         // GET: TeacherController/Details/5
         public ActionResult Details(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
-            ViewBag.Stage = new SelectList(db.stages.Where(c=>c.SectionId == SectionID).ToList(), "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages.Where(c => c.SectionId == SectionID).ToList(), "ID", "Name");
             ViewBag.Level = new SelectList(db.levels.Where(c => c.StageId == StageID).ToList(), "ID", "Name");
             return View(user);
         }
@@ -53,13 +53,13 @@ namespace LMS.Areas.Dashboard.Controllers
         // POST: TeacherController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(IFormCollection collection ,User user)
+        public async Task<ActionResult> Create(IFormCollection collection, Teacher user)
         {
             user.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(user.LevelId);
             user.Level = Listlevel;
-            string role = Request.Form["JobType"];
-            user.JobType = role;
+            //string role = Request.Form["JobType"];
+            //user.JobType = role;
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -74,10 +74,10 @@ namespace LMS.Areas.Dashboard.Controllers
             else
             {
                 var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
-                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId +".jpg");
-                user.image = @"\images\" + user.NationalId +".jpg";
+                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId + ".jpg");
+                user.image = @"\images\" + user.NationalId + ".jpg";
             }
-            db.users.Add(user);
+            db.teachers.Add(user);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -85,7 +85,7 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: TeacherController/Edit/5
         public ActionResult Edit(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -97,9 +97,9 @@ namespace LMS.Areas.Dashboard.Controllers
         // POST: TeacherController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int ID, IFormCollection collection ,User users)
+        public async Task<ActionResult> Edit(int ID, IFormCollection collection, Teacher users)
         {
-            var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
+            var user = await db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
 
             //users.LevelId = Convert.ToInt32(Request.Form["Level"]);
             //var Listlevel = db.levels.Find(users.LevelId);
@@ -125,7 +125,6 @@ namespace LMS.Areas.Dashboard.Controllers
             }
             user.Name = users.Name;
             user.NationalId = users.NationalId;
-            user.ParentName = users.ParentName;
             user.phone = users.phone;
             user.status = users.status;
             user.LevelId = users.LevelId;
@@ -138,7 +137,7 @@ namespace LMS.Areas.Dashboard.Controllers
         // GET: TeacherController/Delete/5
         public ActionResult Delete(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             return View(user);
         }
 
@@ -147,7 +146,7 @@ namespace LMS.Areas.Dashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int ID, IFormCollection collection)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.teachers.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             string webRootPath = webHostEnvironment.WebRootPath;
 
             var imagePath = Path.Combine(webRootPath, user.image.TrimStart('\\'));
@@ -155,7 +154,7 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 System.IO.File.Delete(imagePath);
             }
-            db.users.Remove(user);
+            db.teachers.Remove(user);
             await db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

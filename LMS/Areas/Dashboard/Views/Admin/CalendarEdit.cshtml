@@ -1,0 +1,175 @@
+﻿@model LMS.Models.ViewModel.CalendarAndTasks
+@{
+    ViewData["Title"] = "CalendarEdit";
+}
+
+<h2>CalendarEdit</h2>
+
+<form method="post" asp-action="CalendarEdit">
+    <div class=" border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*<input type="hidden" asp-for="@Model.calendar.TasksId" />*@
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label asp-for="calendar.Name" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="calendar.Name" class="form-control" />
+            </div>
+            <span asp-validation-for="calendar.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label asp-for="calendar.StartDate" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="calendar.StartDate" type="datetime-local" class="form-control" />
+            </div>
+            <span asp-validation-for="calendar.StartDate" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.FinalDate" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="calendar.FinalDate" type="datetime-local" class="form-control" />
+            </div>
+            <span asp-validation-for="calendar.FinalDate" class="text-danger"></span>
+        </div>
+
+
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.EventID" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="calendar.EventID" asp-items="@ViewBag.Events" class="form-control"></select>
+            </div>
+            <span asp-validation-for="calendar.EventID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.description" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="calendar.description" type="text" class="form-control" />
+            </div>
+            <span asp-validation-for="calendar.description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+
+            @foreach (var item in Model.checkBoxItems)
+            {
+                <input type="checkbox" id="@item.TasksId" name="CategoryIds" value="@item.Name"
+                       @foreach (var c in Model.CategoryIds) { if (c == item.Name) { <text> checked="checked" </text> } } />
+                <label for="optionId">@item.Name</label>
+            }
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.Level.Stage.SectionId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="calendar.Level.Stage.SectionId" id="SectionId" asp-items="@ViewBag.Section" class="form-control"></select>
+            </div>
+            <span asp-validation-for="calendar.Level.Stage.SectionId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.Level.StageId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="calendar.Level.StageId" id="StageId" asp-items="@ViewBag.Stage" class="form-control"></select>
+            </div>
+            <span asp-validation-for="calendar.Level.StageId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="calendar.LevelId" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <select asp-for="calendar.LevelId" name="Level" id="LevelId" asp-items="@ViewBag.Level" class="form-control"></select>
+            </div>
+            <span asp-validation-for="calendar.LevelId" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-info form-control" asp-route="@Model.calendar.ID" value="Update" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="CalendarIndex" class="btn btn-success form-control">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //getStage();
+        //getSection();
+        $('#SectionId').change(function () {
+            getStage();
+            $("#LevelId").empty();
+            var items = "<option value=''> -- Select -- </option>";
+            $("#LevelId").append(items);
+        });
+        $('#StageId').change(function () {
+            getSection();
+        });
+    });
+
+
+    function getStage() {
+
+        var url = '@Url.Content("~/")' + "Dashboard/Student/GetStage";
+        var ddlsource = '#SectionId';
+        $("#StageId").empty();
+        $("#StageId").val('');
+        var items = "<option value=''> -- Select -- </option>";
+        $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+            $.each(data, function (id, Stage) {
+
+                items += "<option value='" + Stage.value + "'>" + Stage.text + "</option>"
+            });
+            $("#StageId").html(items);
+        });
+    }
+
+      function getSection() {
+
+          var url = '@Url.Content("~/")' + "Dashboard/Student/GetLevel";
+          var ddlsource = '#StageId';
+          $("#LevelId").empty();
+          $("#LevelId").val('');
+          var items = "<option value=''> -- Select -- </option>";
+        $.getJSON(url, { id: $(ddlsource).val() }, function (data) {
+
+            //var items = '';
+
+            $.each(data, function (id, section) {
+
+                items += "<option value='" + section.value + "'>" + section.text + "</option>"
+            });
+            $("#LevelId").html(items);
+        });
+    }
+</script>

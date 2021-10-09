@@ -1,12 +1,11 @@
 ﻿using LMS.Data;
 using LMS.Models;
+using LMS.Models.ViewModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +15,7 @@ namespace LMS.Areas.Dashboard.Controllers
     {
         private readonly ApplicationDbContext db;
         public readonly IWebHostEnvironment webHostEnvironment;
-        public QuizController(ApplicationDbContext db,IWebHostEnvironment _webHostEnvironment)
+        public QuizController(ApplicationDbContext db, IWebHostEnvironment _webHostEnvironment)
         {
             this.db = db;
             webHostEnvironment = _webHostEnvironment;
@@ -111,29 +110,25 @@ namespace LMS.Areas.Dashboard.Controllers
         [HttpGet]
         public IActionResult QuizDetailsCreate()
         {
+            QuizDetailsVM quizDetailsVM = new QuizDetailsVM()
+            {
+                QuizDetails = new QuizDetails(),
+                Question = new Question(),
+                Answer= new Answer()
+            };
             ViewBag.Chapter = new SelectList(db.chapters, "ID", "Name");
             ViewBag.Lesson = new SelectList(db.lessons, "ID", "Name");
-            ViewBag.QuestionType = new SelectList(db.QuestionType, "ID", "Name"); 
-            return View();
+            return View(quizDetailsVM);
         }
-        [HttpPost]
-        public async Task<IActionResult> QuizDetailsCreate(QuizDetails quizDetails)
-        {
-            string webrootpath = webHostEnvironment.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count > 0)
-            {
-                var uploads = Path.Combine(webrootpath, "images");
 
-                using (var filesStream = new FileStream(Path.Combine(uploads, files[0].FileName), FileMode.Create))
-                {
-                    files[0].CopyTo(filesStream);
-                }
-                quizDetails.Question.Image = @"\images\" + files[0].FileName;
-            }
-            db.QuizDetails.Add(quizDetails);
+        [HttpPost]
+        public async  Task<IActionResult> QuizDetailsCreate(QuizDetailsVM quizDetailsVM)
+        {
+            var ChapterName = db.chapters.Where(x => x.ID == quizDetailsVM.QuizDetails.ChapterId).FirstOrDefault();
+            quizDetailsVM.QuizDetails.Chapter.Name = ChapterName.Name;
+            //db.QuizDetails.Add(quizDetailsVM);
             await db.SaveChangesAsync();
-            return RedirectToAction(nameof(QuizDetailsIndex));
+            return RedirectToAction("QuestionCreate", "Question");
         }
 
         public async Task<IActionResult> getLesson(int id)

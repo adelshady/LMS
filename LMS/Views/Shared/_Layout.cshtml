@@ -287,6 +287,21 @@
                             <li>
                                 <a href="@Url.Action("QuizIndex", null, new { area = "Dashboard", controller = "Quiz"})" class="slide-item">Quiz</a>
                             </li>
+                            <li>
+                                <a href="@Url.Action("LessonIndex", null, new { area = "Dashboard", controller = "Admin"})" class="slide-item">Lesson</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ChapterIndex", null, new { area = "Dashboard", controller = "Admin"})" class="slide-item">Chapter</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("QuestionTypeIndex", null, new { area = "Dashboard", controller = "Question"})" class="slide-item">QuestionType</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("EventIndex", null, new { area = "Dashboard", controller = "Admin"})" class="slide-item">Events</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("TaskIndex", null, new { area = "Dashboard", controller = "Admin"})" class="slide-item">Tasks</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="slide">
@@ -462,6 +477,9 @@
 
 
 
+
+
+
     <script src="~/assets/plugins/fullcalendar/moment.min.js"></script>
     <script src="~/assets/js/vendors/jquery-3.2.1.min.js"></script>
     <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -520,6 +538,7 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <!-- Custom Js-->
     @*<script src="~/assets/js/admin-custom.js"></script>*@
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

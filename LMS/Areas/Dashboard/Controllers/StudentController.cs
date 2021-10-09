@@ -24,7 +24,7 @@ namespace LMS.Areas.Dashboard.Controllers
         }
         public IActionResult Index()
         {
-            var user = db.users.Include(x => x.Level).Include(x=>x.Level.Stage).Include(x=>x.Level.Stage.Section).Where(x => x.JobType == "Student").ToList();
+            var user = db.students.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).ToList();
             return View(user);
         }
 
@@ -37,13 +37,13 @@ namespace LMS.Areas.Dashboard.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(User user, IFormCollection formValues)
+        public async Task<IActionResult> Create(Student user, IFormCollection formValues)
         {
             user.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(user.LevelId);
             user.Level = Listlevel;
-            string role = Request.Form["JobType"];
-            user.JobType = role;
+            //string role = Request.Form["JobType"];
+            //user.JobType = role;
             string webrootpath = webHostEnvironment.WebRootPath;
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -59,10 +59,10 @@ namespace LMS.Areas.Dashboard.Controllers
             else
             {
                 var uploads = Path.Combine(webrootpath, @"images\" + "Avatar.jpg");
-                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId+ ".jpg");
+                System.IO.File.Copy(uploads, webrootpath + @"\images\" + user.NationalId + ".jpg");
                 user.image = @"\images\" + user.NationalId + ".png";
             }
-            db.users.Add(user);
+            db.students.Add(user);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -70,7 +70,7 @@ namespace LMS.Areas.Dashboard.Controllers
         [HttpGet]
         public IActionResult Edit(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.students.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -79,9 +79,9 @@ namespace LMS.Areas.Dashboard.Controllers
             return View(user);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int ID, IFormCollection formValuses, User users)
+        public async Task<IActionResult> Edit(int ID, IFormCollection formValuses, Student users)
         {
-            var user = await db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
+            var user = await db.students.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefaultAsync();
             users.LevelId = Convert.ToInt32(Request.Form["Level"]);
             var Listlevel = db.levels.Find(users.LevelId);
             user.Level = Listlevel;
@@ -116,10 +116,10 @@ namespace LMS.Areas.Dashboard.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
+
         public IActionResult Details(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.students.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             var SectionID = user.Level.Stage.SectionId;
             var StageID = user.Level.StageId;
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
@@ -131,7 +131,7 @@ namespace LMS.Areas.Dashboard.Controllers
 
         public async Task<IActionResult> Delete(int ID)
         {
-            var user = db.users.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
+            var user = db.students.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section).Where(x => x.ID == ID).SingleOrDefault();
             string webRootPath = webHostEnvironment.WebRootPath;
 
             var imagePath = Path.Combine(webRootPath, user.image.TrimStart('\\'));
@@ -139,7 +139,7 @@ namespace LMS.Areas.Dashboard.Controllers
             {
                 System.IO.File.Delete(imagePath);
             }
-            db.users.Remove(user);
+            db.students.Remove(user);
             await db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
