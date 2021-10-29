@@ -1,0 +1,102 @@
+﻿@model IEnumerable<LMS.Models.Content>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Content</h2>
+
+
+<br />
+
+<br />
+
+
+<form method="post" asp-action="CreateContent" enctype="multipart/form-data">
+    <div class=" border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="course-warp">
+
+            <div class="row course-items-area">
+
+                @foreach (var item in Model)
+                {
+                    <!-- course -->
+                    <div class="mix col-lg-3 col-md-4 col-sm-6 finance">
+                        <div class="course-item">
+                            <div class="course-info">
+                                <div class="course-text">
+                                    <h5>Content Name @item.ContentName</h5>
+                                    <hr />
+                                    <div class="students"><video autoplay controls src="/Instructor/TeacherCourse/SampleVideoStream?id=@item.ID"></video></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section scripts{
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+
+
+
+
+
+
+
+@*<p>
+    <a asp-action="CreateContent" class="btn btn-primary text-white">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishDate)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishDate)
+                </td>
+                <td>
+                    <video autoplay controls src="/Instructor/TeacherCourse/SampleVideoStream?id=@item.ID"></video>
+                </td>
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary text-white">
+                        Edit
+                        <i class="fas fa-edit"></i>
+                    </a> |
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-success text-white">
+                        Details
+                        <i class="fas fa-list-alt"></i>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger text-white">
+                        Delete
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@

@@ -29,6 +29,21 @@
                         <label for="name">CourseName :</label>
                         <input type="text" name="CourseName" id="name" required />
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Teacher</label>
+                        <select asp-for="@Model.TeacherId" asp-items="ViewBag.Teacher" class="form-control" required>
+                            <option value="">Select your level</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Student</label>
+                        <select asp-for="@Model.StudentId" asp-items="ViewBag.Student" class="form-control" required>
+                            <option value="">Select your level</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label">Section</label>
                         <select asp-for="@Model.Level.Stage.SectionId" id="SectionId" asp-items="ViewBag.Section" class="form-control" required>
@@ -43,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Level</label>
-                        <select asp-for="@Model.LevelId" name="Level" id="LevelId" asp-items="ViewBag.level" class="form-control" required>
+                        <select asp-for="@Model.LevelId" id="LevelId" asp-items="ViewBag.level" class="form-control" required>
                             <option value="">Select your level</option>
                         </select>
                     </div>

@@ -23,7 +23,7 @@ namespace LMS.Areas.Dashboard.Controllers
         public ActionResult Index()
         {
             var courses = db.courses.Include(x => x.Level).Include(x => x.Level.Stage).Include(x => x.Level.Stage.Section)
-                .Include(x => x.HoDs).Include(x=>x.Teacher).ToList();
+                .Include(x=>x.Teacher).ToList();
             return View(courses);
         }
 
@@ -39,6 +39,8 @@ namespace LMS.Areas.Dashboard.Controllers
             ViewBag.level = new SelectList(db.levels, "ID", "Name");
             ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
             ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            ViewBag.Student = new SelectList(db.students, "ID", "Name");
+            ViewBag.Teacher = new SelectList(db.teachers, "ID", "Name");
             //TeacherAndHoDsVm teacherAndHoDsVm = new TeacherAndHoDsVm();
             //teacherAndHoDsVm.GetTeacherList = db.teachers.Select(x => new TeacherAndHoDsVm
             //{
@@ -46,8 +48,8 @@ namespace LMS.Areas.Dashboard.Controllers
             //    TeacherName= x.Name
             //}).ToList();
 
-            var user = db.courses.Include(x => x.HoDs).Include(x=>x.Teacher).ToList();
-            return View(user);
+            // var user = db.courses.Include(x => x.HoDs).Include(x=>x.Teacher).ToList();
+            return View();
         }
 
         // POST: CourseController/Create
@@ -56,9 +58,11 @@ namespace LMS.Areas.Dashboard.Controllers
         public async Task<ActionResult> Create(Course course)
         {
 
-            course.Teacher.LevelId = Convert.ToInt32(Request.Form["Level"]);
-            var Listlevel = db.levels.Find(course.Teacher.LevelId);
-            course.Teacher.Level = Listlevel;
+            //  course.Teacher.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(course.LevelId);
+            var ListStage = db.stages.Find(course.Level.StageId);
+            course.Level.Stage = ListStage;
+            course.Level = Listlevel;
 
             db.courses.Add(course);
             await db.SaveChangesAsync();

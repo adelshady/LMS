@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace LMS.Areas.Dashboard.Controllers
 {
-
+    [Area("Dashboard")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext db;
@@ -85,6 +85,7 @@ namespace LMS.Areas.Dashboard.Controllers
                 ViewBag.message = "UserName or Password incorrect";
 
             }
+
             HttpContext.Session.SetInt32("UserID", users.ID);
             HttpContext.Session.SetString("UserName", users.Name);
             return RedirectToAction(nameof(Index));
@@ -783,6 +784,57 @@ namespace LMS.Areas.Dashboard.Controllers
 
         #endregion
 
+        #region Announcement
+
+        public IActionResult AnnounceIndex()
+        {
+            var announce = db.Announcements.Include(x => x.Level).ToList(); 
+            return View(announce);
+        }
+
+        public IActionResult AnnounceCreate()
+        {
+            List<CheckBoxItem> lstchk = new List<CheckBoxItem>()
+            {
+                new CheckBoxItem {TasksId =1 ,Name="Teacher"},
+                new CheckBoxItem {TasksId =2 ,Name="HoDs"},
+                 new CheckBoxItem {TasksId =3 ,Name="Student"},
+                new CheckBoxItem {TasksId =4 ,Name="Parent"}
+            };
+
+            var model = new AnnounceVM
+            {
+                checkBoxItems = lstchk
+            };
+
+            ViewBag.Level = new SelectList(db.levels, "ID", "Name");
+            ViewBag.Stage = new SelectList(db.stages, "ID", "Name");
+            ViewBag.Section = new SelectList(db.sections, "ID", "Name");
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult AnnounceCreate(AnnounceVM  announceVM)
+        {
+
+            announceVM.Announcement.Roles = Request.Form["CategoryIds"];
+            announceVM.Announcement.LevelId = Convert.ToInt32(Request.Form["Level"]);
+            var Listlevel = db.levels.Find(announceVM.Announcement.LevelId);
+            announceVM.Announcement.Level = Listlevel;
+
+            announceVM.Announcement.CreatedAt = DateTime.Now;
+
+            if (string.IsNullOrEmpty(announceVM.Announcement.Roles))  //this is used when no checkbox is checked
+            {
+                announceVM.Announcement.Roles= "None,None"; 
+            }
+
+            db.Announcements.Add(announceVM.Announcement);
+            db.SaveChanges();
+
+            return RedirectToAction(nameof(AnnounceIndex));
+        }
+
+        #endregion
 
         public IActionResult Profile()
         {

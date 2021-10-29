@@ -31,9 +31,6 @@
             <th>
                  Teacher
             </th>
-            <th>
-                HoDs
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -59,9 +56,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Teacher.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoDs.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary text-white">

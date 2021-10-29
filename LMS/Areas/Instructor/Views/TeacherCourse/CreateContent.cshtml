@@ -1,0 +1,95 @@
+﻿@model LMS.Models.Content
+@{
+    ViewData["Title"] = "ChapterContent";
+}
+
+<br />
+<h2 class="text-info">Create Content</h2>
+<br />
+
+<br />
+
+
+<form method="post" asp-action="CreateContent" enctype="multipart/form-data">
+    <div class=" border backgroundWhite">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label class="col-form-label">Content Name</label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ContentName" class="form-control" />
+            </div>
+            <span asp-validation-for="ContentName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-3">
+                <label  class="col-form-label"> Chapter Name</label>
+            </div>
+            <div class="col-5">
+                <select asp-for="ChapterId" asp-items="@ViewBag.Chapter" class="form-control"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+
+            <div class="col-3">
+                <label  class="col-form-label"> Lesson Name</label>
+            </div>
+            <div class="col-5">
+                <select asp-for="Chapter.LessonId" asp-items="@ViewBag.Lesson" class="form-control"></select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label class="col-form-label">PublishDate</label>
+            </div>
+            <div class="col-5">
+                <input type="datetime-local" asp-for="PublishDate" class="form-control" />
+            </div>
+            <span asp-validation-for="PublishDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label class="col-form-label">Body</label>
+            </div>
+            <div class="col-5">
+                <input asp-for="Body" class="form-control" />
+            </div>
+            <span asp-validation-for="Body" class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+
+            <div class="col-2">
+                <label class="col-form-label">Video</label>
+            </div>
+            <div class="col-5">
+                <input name="file" type="file" class="form-control" />
+            </div>
+            <span asp-validation-for="VideoData" class="text-danger"></span>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-info form-control" value="Create" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="CreateContent" class="btn btn-success form-control">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

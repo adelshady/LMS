@@ -24,13 +24,14 @@ namespace LMS.Models
         [Required]
         [Display(Name = "Teacher")]
         public int TeacherId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey("TeacherId")]
         public virtual Teacher Teacher { get; set; }
         [Required]
-        [Display(Name = "HoDs")]
-        public int HoDsId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual HoDs HoDs { get; set; }
+        [Display(Name = "Student")]
+        public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
+        public virtual Student Student{ get; set; }
+
 
     }
 }

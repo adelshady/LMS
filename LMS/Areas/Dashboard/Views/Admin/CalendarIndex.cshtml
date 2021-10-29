@@ -28,7 +28,9 @@
                                 </a>
 
                             </li>
+
                         }
+
                     }
                 </ul>
             </li>
@@ -93,78 +95,78 @@
                         }
                     }
                 </ul>
-                </li>
+            </li>
 
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+            <li class="cd-schedule__group">
+                <div class="cd-schedule__top-info"><span>Wednesday</span></div>
 
-                    <ul>
-                        @foreach (var item in Model)
+                <ul>
+                    @foreach (var item in Model)
+                    {
+
+                        @if (item.day == "Wednesday")
                         {
+                            <li class="cd-schedule__event">
 
-                            @if (item.day == "Wednesday")
-                            {
-                                <li class="cd-schedule__event">
+                                <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                    <em class="cd-schedule__name"><h2>@item.Name</h2></em>
+                                    <em class="cd-schedule__name">@item.description</em>
+                                </a>
 
-                                    <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                        <em class="cd-schedule__name"><h2>@item.Name</h2></em>
-                                        <em class="cd-schedule__name">@item.description</em>
-                                    </a>
-
-                                </li>
-                            }
+                            </li>
                         }
-                    </ul>
-                </li>
+                    }
+                </ul>
+            </li>
 
 
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Thursday</span></div>
+            <li class="cd-schedule__group">
+                <div class="cd-schedule__top-info"><span>Thursday</span></div>
 
-                    <ul>
-                        @foreach (var item in Model)
+                <ul>
+                    @foreach (var item in Model)
+                    {
+
+                        @if (item.day == "Thursday")
                         {
+                            <li class="cd-schedule__event">
 
-                            @if (item.day == "Thursday")
-                            {
-                                <li class="cd-schedule__event">
+                                <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                    <em class="cd-schedule__name"><h2>@item.Name</h2></em>
+                                    <em class="cd-schedule__name">@item.description</em>
+                                </a>
 
-                                    <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                        <em class="cd-schedule__name"><h2>@item.Name</h2></em>
-                                        <em class="cd-schedule__name">@item.description</em>
-                                    </a>
-
-                                </li>
-                            }
+                            </li>
                         }
-                    </ul>
-                </li>
+                    }
+                </ul>
+            </li>
 
 
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Friday</span></div>
+            <li class="cd-schedule__group">
+                <div class="cd-schedule__top-info"><span>Friday</span></div>
 
-                    <ul>
-                        @foreach (var item in Model)
+                <ul>
+                    @foreach (var item in Model)
+                    {
+
+                        @if (item.day == "Friday")
                         {
+                            <li class="cd-schedule__event">
 
-                            @if (item.day == "Friday")
-                            {
-                                <li class="cd-schedule__event">
+                                <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                    <em class="cd-schedule__name"><h2>@item.Name</h2></em>
+                                    <em class="cd-schedule__name">@item.description</em>
+                                </a>
 
-                                    <a data-start="@item.StartDate" data-end="@item.FinalDate" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                        <em class="cd-schedule__name"><h2>@item.Name</h2></em>
-                                        <em class="cd-schedule__name">@item.description</em>
-                                    </a>
-
-                                </li>
-                            }
+                            </li>
                         }
-                    </ul>
-                </li>
+                    }
+                </ul>
+            </li>
 
 
-            </ul>
-        </div>
+        </ul>
     </div>
+</div>
 

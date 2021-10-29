@@ -72,10 +72,10 @@ namespace LMS
             app.UseRouting();
             app.UseSession(); 
 
-            app.UseSignalR( route =>
-            {
-                route.MapHub<ChatHub>("/Admin/Chat");
-            });
+            //app.UseSignalR( route =>
+            //{
+            //    route.MapHub<ChatHub>("/Admin/Chat");
+            //});
 
             app.UseAuthorization();
 
@@ -83,7 +83,7 @@ namespace LMS
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{area=Dashboard}/{controller=Admin}/{action=Login}/{id?}");
+                    pattern: "{area=User}/{controller=StudentCourse}/{action=Test}/{id?}");
             });
         }
     }

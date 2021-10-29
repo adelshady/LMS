@@ -5,6 +5,62 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\0.png" />
+    <None Remove="images\29810151700056.jpg" />
+    <None Remove="images\301.jpg" />
+    <None Remove="images\301.jpg.jpg" />
+    <None Remove="images\Avatar.jpg" />
+    <None Remove="images\download.jfif" />
+    <None Remove="images\download.jpg" />
+    <None Remove="images\Pizza-Wallpapers-1024x640.jpg" />
+    <None Remove="images\Screenshot (1).png" />
+    <None Remove="images\Screenshot (8).png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="images\0.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\29810151700056.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\301.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\301.jpg.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\Avatar.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\download.jfif">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\download.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\Pizza-Wallpapers-1024x640.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\Screenshot (1).png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="images\Screenshot (8).png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.2.0" />
@@ -28,6 +84,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\plugins\calendar2\" />
+    <Folder Include="wwwroot\File\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +92,7 @@
     <None Include="wwwroot\Calendar\assets\css\style.scss" />
     <None Include="wwwroot\Calendar\assets\js\main.js" />
     <None Include="wwwroot\Calendar\assets\js\util.js" />
+    <None Include="wwwroot\Layout\images\teacher-1.jpg" />
     <None Include="wwwroot\Profile\assets\css\style.min.css.map" />
     <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-de-merc-en.js" />
     <None Include="wwwroot\Profile\assets\data\vector-maps\custom\jquery-jvectormap-es-merc-en.js" />

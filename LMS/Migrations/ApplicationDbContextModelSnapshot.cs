@@ -70,6 +70,44 @@ namespace LMS.Migrations
                     b.ToTable("admins");
                 });
 
+            modelBuilder.Entity("LMS.Models.Announcement", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Roles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ShowUntil")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LevelId");
+
+                    b.ToTable("Announcements");
+                });
+
             modelBuilder.Entity("LMS.Models.Answer", b =>
                 {
                     b.Property<int>("ID")
@@ -154,6 +192,36 @@ namespace LMS.Migrations
                     b.ToTable("chapters");
                 });
 
+            modelBuilder.Entity("LMS.Models.Content", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ChapterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("VideoData")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ChapterId");
+
+                    b.ToTable("Contents");
+                });
+
             modelBuilder.Entity("LMS.Models.Course", b =>
                 {
                     b.Property<int>("ID")
@@ -169,23 +237,22 @@ namespace LMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HoDsId")
-                        .HasColumnType("int");
-
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeacherId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("LevelId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("courses");
                 });
@@ -699,7 +766,43 @@ namespace LMS.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("LMS.Models.Zone", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("File")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Zones");
+                });
+
             modelBuilder.Entity("LMS.Models.Admin", b =>
+                {
+                    b.HasOne("LMS.Models.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
+                });
+
+            modelBuilder.Entity("LMS.Models.Announcement", b =>
                 {
                     b.HasOne("LMS.Models.Level", "Level")
                         .WithMany()
@@ -751,6 +854,17 @@ namespace LMS.Migrations
                     b.Navigation("Lesson");
                 });
 
+            modelBuilder.Entity("LMS.Models.Content", b =>
+                {
+                    b.HasOne("LMS.Models.Chapter", "Chapter")
+                        .WithMany()
+                        .HasForeignKey("ChapterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapter");
+                });
+
             modelBuilder.Entity("LMS.Models.Course", b =>
                 {
                     b.HasOne("LMS.Models.Level", "Level")
@@ -759,17 +873,21 @@ namespace LMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LMS.Models.HoDs", "HoDs")
+                    b.HasOne("LMS.Models.Student", "Student")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LMS.Models.Teacher", "Teacher")
                         .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("HoDs");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Level");
+
+                    b.Navigation("Student");
 
                     b.Navigation("Teacher");
                 });
